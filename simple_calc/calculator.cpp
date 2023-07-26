@@ -6,6 +6,7 @@ Calculator::Calculator(QWidget *parent)
     , ui(new Ui::Calculator)
 {
     ui->setupUi(this);
+    QMainWindow::setWindowIcon(QIcon(":/icon.iso"));
 }
 
 Calculator::~Calculator()

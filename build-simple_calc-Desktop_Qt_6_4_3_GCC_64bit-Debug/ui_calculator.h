@@ -753,7 +753,13 @@ public:
         menubar = new QMenuBar(Calculator);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 413, 22));
-        menubar->setStyleSheet(QString::fromUtf8("background-color: qlineargradient(spread:pad, x1:0.542045, y1:0.034, x2:0.532, y2:0.983, stop:0 rgba(45, 45, 45, 255), stop:1 rgba(81, 80, 77, 255));"));
+        QFont font2;
+        font2.setFamilies({QString::fromUtf8("Ubuntu")});
+        font2.setPointSize(11);
+        font2.setBold(true);
+        menubar->setFont(font2);
+        menubar->setStyleSheet(QString::fromUtf8("background-color: qlineargradient(spread:pad, x1:0.542045, y1:0.034, x2:0.532, y2:0.983, stop:0 rgba(45, 45, 45, 255), stop:1 rgba(81, 80, 77, 255));\n"
+"color: #DDD;"));
         menuMode = new QMenu(menubar);
         menuMode->setObjectName("menuMode");
         menuHelp = new QMenu(menubar);
