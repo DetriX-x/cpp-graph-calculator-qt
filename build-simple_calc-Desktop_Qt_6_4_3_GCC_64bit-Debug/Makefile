@@ -53,11 +53,9 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../simple_calc/main.cpp \
-		../simple_calc/calculator.cpp qrc_res.cpp \
-		moc_calculator.cpp
+		../simple_calc/calculator.cpp moc_calculator.cpp
 OBJECTS       = main.o \
 		calculator.o \
-		qrc_res.o \
 		moc_calculator.o
 DIST          = /home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/detrix/Qt/6.4.3/gcc_64/mkspecs/common/unix.conf \
@@ -207,7 +205,8 @@ DIST          = /home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/exceptions.prf \
 		/home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/yacc.prf \
 		/home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/lex.prf \
-		../simple_calc/simple_calc.pro ../simple_calc/calculator.h ../simple_calc/main.cpp \
+		../simple_calc/simple_calc.pro ../simple_calc/calculator.h \
+		../simple_calc/exprtk.hpp ../simple_calc/main.cpp \
 		../simple_calc/calculator.cpp
 QMAKE_TARGET  = simple_calc
 DESTDIR       = 
@@ -369,7 +368,6 @@ Makefile: ../simple_calc/simple_calc.pro /home/detrix/Qt/6.4.3/gcc_64/mkspecs/li
 		/home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/yacc.prf \
 		/home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/lex.prf \
 		../simple_calc/simple_calc.pro \
-		../simple_calc/res.qrc \
 		/home/detrix/Qt/6.4.3/gcc_64/lib/libQt6Widgets.prl \
 		/home/detrix/Qt/6.4.3/gcc_64/lib/libQt6Gui.prl \
 		/home/detrix/Qt/6.4.3/gcc_64/lib/libQt6Core.prl
@@ -523,7 +521,6 @@ Makefile: ../simple_calc/simple_calc.pro /home/detrix/Qt/6.4.3/gcc_64/mkspecs/li
 /home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/yacc.prf:
 /home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/lex.prf:
 ../simple_calc/simple_calc.pro:
-../simple_calc/res.qrc:
 /home/detrix/Qt/6.4.3/gcc_64/lib/libQt6Widgets.prl:
 /home/detrix/Qt/6.4.3/gcc_64/lib/libQt6Gui.prl:
 /home/detrix/Qt/6.4.3/gcc_64/lib/libQt6Core.prl:
@@ -541,9 +538,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../simple_calc/res.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /home/detrix/Qt/6.4.3/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../simple_calc/calculator.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../simple_calc/calculator.h ../simple_calc/exprtk.hpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../simple_calc/main.cpp ../simple_calc/calculator.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../simple_calc/calculator.ui $(DISTDIR)/
 
@@ -569,14 +565,8 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all: qrc_res.cpp
+compiler_rcc_make_all:
 compiler_rcc_clean:
-	-$(DEL_FILE) qrc_res.cpp
-qrc_res.cpp: ../simple_calc/res.qrc \
-		/home/detrix/Qt/6.4.3/gcc_64/libexec/rcc \
-		../simple_calc/icon.ico
-	/home/detrix/Qt/6.4.3/gcc_64/libexec/rcc -name res --no-zstd ../simple_calc/res.qrc -o qrc_res.cpp
-
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
@@ -724,7 +714,11 @@ moc_calculator.cpp: ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtGui/QTransform \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtCore/qnativeinterface.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qtabwidget.h \
-		/home/detrix/Qt/6.4.3/gcc_64/include/QtGui/QIcon \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtCore/QtMath \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/QMessageBox \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qmessagebox.h \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qdialog.h \
+		../simple_calc/exprtk.hpp \
 		moc_predefs.h \
 		/home/detrix/Qt/6.4.3/gcc_64/libexec/moc
 	/home/detrix/Qt/6.4.3/gcc_64/libexec/moc $(DEFINES) --include /home/ketrix/programs/c++/graph_calc/build-simple_calc-Desktop_Qt_6_4_3_GCC_64bit-Debug/moc_predefs.h -I/home/detrix/Qt/6.4.3/gcc_64/mkspecs/linux-g++ -I/home/ketrix/programs/c++/graph_calc/simple_calc -I/home/detrix/Qt/6.4.3/gcc_64/include -I/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets -I/home/detrix/Qt/6.4.3/gcc_64/include/QtGui -I/home/detrix/Qt/6.4.3/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../simple_calc/calculator.h -o moc_calculator.cpp
@@ -746,7 +740,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -888,7 +882,11 @@ main.o: ../simple_calc/main.cpp ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtGui/QTransform \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtCore/qnativeinterface.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qtabwidget.h \
-		/home/detrix/Qt/6.4.3/gcc_64/include/QtGui/QIcon \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtCore/QtMath \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/QMessageBox \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qmessagebox.h \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qdialog.h \
+		../simple_calc/exprtk.hpp \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/QApplication \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qapplication.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1052,7 +1050,11 @@ calculator.o: ../simple_calc/calculator.cpp ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtGui/QTransform \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtCore/qnativeinterface.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qtabwidget.h \
-		/home/detrix/Qt/6.4.3/gcc_64/include/QtGui/QIcon \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtCore/QtMath \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/QMessageBox \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qmessagebox.h \
+		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qdialog.h \
+		../simple_calc/exprtk.hpp \
 		ui_calculator.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtCore/QVariant \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtGui/QAction \
@@ -1103,9 +1105,6 @@ calculator.o: ../simple_calc/calculator.cpp ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/qstatusbar.h \
 		/home/detrix/Qt/6.4.3/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o calculator.o ../simple_calc/calculator.cpp
-
-qrc_res.o: qrc_res.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_res.o qrc_res.cpp
 
 moc_calculator.o: moc_calculator.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_calculator.o moc_calculator.cpp

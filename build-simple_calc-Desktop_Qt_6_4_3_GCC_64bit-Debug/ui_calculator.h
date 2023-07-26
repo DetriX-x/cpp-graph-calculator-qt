@@ -767,6 +767,12 @@ public:
         Calculator->setMenuBar(menubar);
         statusbar = new QStatusBar(Calculator);
         statusbar->setObjectName("statusbar");
+        QFont font3;
+        font3.setFamilies({QString::fromUtf8("Ubuntu")});
+        font3.setPointSize(18);
+        font3.setBold(false);
+        statusbar->setFont(font3);
+        statusbar->setStyleSheet(QString::fromUtf8("color: red;"));
         Calculator->setStatusBar(statusbar);
 
         menubar->addAction(menuMode->menuAction());
@@ -785,7 +791,7 @@ public:
         pushButton_6->setText(QCoreApplication::translate("Calculator", "6", nullptr));
         pushButton_sub->setText(QCoreApplication::translate("Calculator", "-", nullptr));
         pushButton_2->setText(QCoreApplication::translate("Calculator", "2", nullptr));
-        display->setText(QCoreApplication::translate("Calculator", "0", nullptr));
+        display->setText(QString());
         pushButton_sum->setText(QCoreApplication::translate("Calculator", "+", nullptr));
         pushButton_percent->setText(QCoreApplication::translate("Calculator", "%", nullptr));
         pushButton_bracket_left->setText(QCoreApplication::translate("Calculator", "(", nullptr));

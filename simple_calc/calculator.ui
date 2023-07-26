@@ -268,7 +268,7 @@ QPushButton:pressed{
 }</string>
       </property>
       <property name="text">
-       <string>0</string>
+       <string/>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1171,7 +1171,18 @@ color: #DDD;</string>
    <addaction name="menuMode"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="font">
+    <font>
+     <family>Ubuntu</family>
+     <pointsize>18</pointsize>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: red;</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

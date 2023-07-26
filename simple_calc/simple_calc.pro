@@ -13,7 +13,8 @@ SOURCES += \
     calculator.cpp
 
 HEADERS += \
-    calculator.h
+    calculator.h \
+    exprtk.hpp
 
 FORMS += \
     calculator.ui
@@ -23,7 +24,5 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RESOURCES += \
-    res.qrc
+RESOURCES +=
 
-ICON = icon.ico
