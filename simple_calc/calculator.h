@@ -1,16 +1,13 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
 
-#include "qlineedit.h"
 #include <QMainWindow>
 #include <QtMath>
 #include <QMessageBox>
-#include <exprtk.hpp>
 #include <string>
+#include <muParser.h>
 
-typedef exprtk::parser<double>		 parser_d;
-typedef exprtk::symbol_table<double> table_d;
-typedef exprtk::expression<double>	 expression_d;
+typedef mu::Parser Parser;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Calculator; }
@@ -36,9 +33,7 @@ private:
     Ui::Calculator *ui;
     std::string tmp;
     QString str;
-    parser_d parser;
-    table_d table;
-    expression_d expression;
     double result;
+    Parser parser;
 };
 #endif // CALCULATOR_H

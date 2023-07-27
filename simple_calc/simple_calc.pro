@@ -14,7 +14,6 @@ SOURCES += \
 
 HEADERS += \
     calculator.h \
-    exprtk.hpp
 
 FORMS += \
     calculator.ui
@@ -26,3 +25,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES +=
 
+
+unix:!macx: LIBS += -L$$PWD/../build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug/ -lmuparser
+
+INCLUDEPATH += $$PWD/../build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug
+DEPENDPATH += $$PWD/../build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug

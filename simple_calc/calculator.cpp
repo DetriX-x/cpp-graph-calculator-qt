@@ -57,9 +57,7 @@ Calculator::Calculator(QWidget *parent) // constructor
     connect(ui->pushButton_dot, &QPushButton::clicked, this, &Calculator::calc_key_handler);
     connect(ui->pushButton_res, &QPushButton::clicked, this, &Calculator::calc_key_handler);
 
-
-    table.add_constant("pi", M_PI);
-    expression.register_symbol_table(table);
+    parser.DefineConst("pi", M_PI);
 }
 
 Calculator::~Calculator() // destructor
@@ -79,12 +77,16 @@ void Calculator::on_pushButton_res_clicked() // result button clicked
 {
     str = ui->display->text();
     tmp = str.toStdString();
-    if(!parser.compile(tmp, expression))
+    parser.SetExpr(tmp);
+    try
+    {
+        result = parser.Eval();
+    }
+    catch(...)
     {
         ui->statusbar->showMessage("Error, expression is incorrect");
         return;
     }
-    result = expression.value();
     if(std::isinf(result) or std::isnan(result)) // division by zero handling
     {
         ui->statusbar->showMessage("Error, result can't be shown");
