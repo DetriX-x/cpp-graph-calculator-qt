@@ -6,6 +6,9 @@
 #include <QMessageBox>
 #include <string>
 #include <muParser.h>
+#include <helpwindow.h>
+#include <qcustomplot.h>
+#include <QVector>
 
 typedef mu::Parser Parser;
 
@@ -29,11 +32,27 @@ private slots:
 
     void calc_key_handler();
 
+    void on_actionExit_triggered();
+
+    void on_actionHelp_triggered();
+
+    void on_actionDefault_triggered();
+
+    void on_actionGraphic_triggered();
+
 private:
     Ui::Calculator *ui;
     std::string tmp;
     QString str;
     double result;
     Parser parser;
+    Parser graphParser;
+    HelpWindow* hw = nullptr;
+    QCPGraph* graph;
+    QVector<double> x, y;
+    enum class Mode{
+        Default, Graphic
+    };
+
 };
 #endif // CALCULATOR_H

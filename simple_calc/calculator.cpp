@@ -7,6 +7,7 @@ Calculator::Calculator(QWidget *parent) // constructor
 {
     ui->setupUi(this);
     ui->display->setPlaceholderText(QString("Type here..."));
+    ui->lineEdit_expression->setPlaceholderText(QString("Enter an expression..."));
     // setting names to buttons
     ui->pushButton_0->setProperty("name", '0');
     ui->pushButton_1->setProperty("name", '1');
@@ -57,7 +58,52 @@ Calculator::Calculator(QWidget *parent) // constructor
     connect(ui->pushButton_dot, &QPushButton::clicked, this, &Calculator::calc_key_handler);
     connect(ui->pushButton_res, &QPushButton::clicked, this, &Calculator::calc_key_handler);
 
+    ui->stackedWidget->setCurrentIndex(int(Mode::Default));
+
     parser.DefineConst("pi", M_PI);
+    parser.DefineConst("exp", M_E);
+
+    // QCustomPlot
+    x.resize(1000);
+    // create and configure plottables:
+    graph = ui->customPlot->addGraph();
+    graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssNone, QPen(Qt::black, 1.5), QBrush(Qt::white), 9));
+    graph->setPen(QPen(QColor(120, 120, 120), 2));
+    // set some pens, brushes and backgrounds:
+    ui->customPlot->xAxis->setBasePen(QPen(Qt::white, 1));
+    ui->customPlot->yAxis->setBasePen(QPen(Qt::white, 1));
+    ui->customPlot->xAxis->setTickPen(QPen(Qt::white, 1));
+    ui->customPlot->yAxis->setTickPen(QPen(Qt::white, 1));
+    ui->customPlot->xAxis->setSubTickPen(QPen(Qt::white, 1));
+    ui->customPlot->yAxis->setSubTickPen(QPen(Qt::white, 1));
+    ui->customPlot->xAxis->setTickLabelColor(Qt::white);
+    ui->customPlot->yAxis->setTickLabelColor(Qt::white);
+    ui->customPlot->xAxis->grid()->setPen(QPen(QColor(140, 140, 140), 1, Qt::DotLine));
+    ui->customPlot->yAxis->grid()->setPen(QPen(QColor(140, 140, 140), 1, Qt::DotLine));
+    ui->customPlot->xAxis->grid()->setSubGridPen(QPen(QColor(80, 80, 80), 1, Qt::DotLine));
+    ui->customPlot->yAxis->grid()->setSubGridPen(QPen(QColor(80, 80, 80), 1, Qt::DotLine));
+    ui->customPlot->xAxis->grid()->setSubGridVisible(true);
+    ui->customPlot->yAxis->grid()->setSubGridVisible(true);
+    ui->customPlot->xAxis->setLabel("x");
+    ui->customPlot->yAxis->setLabel("y");
+    QLinearGradient plotGradient;
+    plotGradient.setStart(0, 0);
+    plotGradient.setFinalStop(0, 350);
+    plotGradient.setColorAt(0, QColor(80, 80, 80));
+    plotGradient.setColorAt(1, QColor(50, 50, 50));
+    ui->customPlot->setBackground(plotGradient);
+    QLinearGradient axisRectGradient;
+    axisRectGradient.setStart(0, 0);
+    axisRectGradient.setFinalStop(0, 350);
+    axisRectGradient.setColorAt(0, QColor(80, 80, 80));
+    axisRectGradient.setColorAt(1, QColor(30, 30, 30));
+    ui->customPlot->axisRect()->setBackground(axisRectGradient);
+    ui->customPlot->rescaleAxes();
+    ui->customPlot->xAxis->setRange(-1, 1);
+    ui->customPlot->yAxis->setRange(-1, 1);
+
+
+    ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 }
 
 Calculator::~Calculator() // destructor
@@ -89,7 +135,7 @@ void Calculator::on_pushButton_res_clicked() // result button clicked
     }
     if(std::isinf(result) or std::isnan(result)) // division by zero handling
     {
-        ui->statusbar->showMessage("Error, result can't be shown");
+        ui->statusbar->showMessage("Error, division by zero");
         return;
     }
     ui->statusbar->clearMessage();
@@ -129,4 +175,34 @@ void Calculator::calc_key_handler()
     }
 }
 
+
+void Calculator::on_actionExit_triggered() // close event
+{
+    this->close();
+}
+
+
+void Calculator::on_actionHelp_triggered() // help window open
+{
+    if(!hw)
+    {
+      hw = new HelpWindow(this);
+      hw->setWindowModality(Qt::NonModal);
+      hw->show();
+      return;
+    }
+    hw->activateWindow();
+}
+
+
+void Calculator::on_actionDefault_triggered() // Default mode
+{
+    ui->stackedWidget->setCurrentIndex(int(Mode::Default));
+}
+
+
+void Calculator::on_actionGraphic_triggered() // Graphic mode
+{
+    ui->stackedWidget->setCurrentIndex(int(Mode::Graphic));
+}
 
