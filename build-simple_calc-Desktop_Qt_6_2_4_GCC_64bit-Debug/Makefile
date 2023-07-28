@@ -1890,48 +1890,7 @@ helpwindow.o: ../simple_calc/helpwindow.cpp ../simple_calc/helpwindow.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/QSizeF \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/QTransform \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qnativeinterface.h \
-		ui_helpwindow.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/QVariant \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QApplication \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qapplication.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qcoreapplication.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qeventloop.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qcoreapplication_platform.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qfuture.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qfutureinterface.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qmutex.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qresultstore.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qfuture_impl.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qthreadpool.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qthread.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qdeadlinetimer.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qelapsedtimer.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qrunnable.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qexception.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qpromise.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qguiapplication.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qinputmethod.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qlocale.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qguiapplication_platform.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QGridLayout \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qgridlayout.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qlayout.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qlayoutitem.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qboxlayout.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QPushButton \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qpushbutton.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qabstractbutton.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qicon.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QSpacerItem \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QTextEdit \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qtextedit.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qframe.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qtextdocument.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qtextoption.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qtextcursor.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qtextformat.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qpen.h
+		ui_helpwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o helpwindow.o ../simple_calc/helpwindow.cpp
 
 main.o: ../simple_calc/main.cpp ../simple_calc/calculator.h \
@@ -2991,15 +2950,7 @@ calculator.o: ../simple_calc/calculator.cpp ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtPrintSupport/qtprintsupportversion.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/QElapsedTimer \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/QTimeZone \
-		ui_calculator.h \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QApplication \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QGridLayout \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QLineEdit \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QMenu \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QMenuBar \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QPushButton \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QStackedWidget \
-		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QStatusBar
+		ui_calculator.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o calculator.o ../simple_calc/calculator.cpp
 
 moc_calculator.o: moc_calculator.cpp 

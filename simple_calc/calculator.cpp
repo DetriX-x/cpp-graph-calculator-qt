@@ -67,9 +67,13 @@ Calculator::Calculator(QWidget *parent) // constructor
     graphParser.DefineVar("x", &varX);
 
     // QCustomPlot
-    ui->customPlot->setNoAntialiasingOnDrag(true);
-    x.resize(101);
-    y.resize(101);
+    ui->customPlot->setAttribute(Qt::WA_OpaquePaintEvent);
+    ui->customPlot->setNotAntialiasedElements(QCP::aeAll); // some optimisation
+
+    connect(ui->customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(xAxisChanged(QCPRange)));
+
+    x.resize(POINTS_SIZE);
+    y.resize(POINTS_SIZE);
     for (int i = 0; i < x.size(); ++i)
     {
         x[i] = i / 50.0 - 1.0;
@@ -233,6 +237,7 @@ void Calculator::on_pushButton_clicked() // Draw Graph
         ui->statusbar->showMessage("Error, expression is incorrect");
         graph->setVisible(false);
         ui->customPlot->replot();
+        isBadGraphExpr = true;
         return;
     }
     if(std::isinf(tRes) or std::isnan(tRes)) // division by zero handling
@@ -240,8 +245,10 @@ void Calculator::on_pushButton_clicked() // Draw Graph
         ui->statusbar->showMessage("Error, division by zero");
         graph->setVisible(false);
         ui->customPlot->replot();
+        isBadGraphExpr = true;
         return;
     }
+    isBadGraphExpr = false;
     graph->setVisible(true);
     ui->statusbar->clearMessage();
     for(int i = 0; i < x.size(); ++i)
@@ -252,4 +259,19 @@ void Calculator::on_pushButton_clicked() // Draw Graph
     graph->setData(x, y);
     ui->customPlot->replot();
 }
+
+void Calculator::xAxisChanged(QCPRange newRange) // changed xAxis max or min value
+{
+    if(isBadGraphExpr) return;
+    double val = (std::abs(newRange.upper) + std::abs(newRange.lower)) / 2;
+    for(int i = 0; i < x.size(); ++i)
+    {
+        x[i] = i;
+        varX = x[i];
+        y[i] = graphParser.Eval();
+    }
+    graph->setData(x, y);
+    ui->customPlot->replot();
+}
+
 

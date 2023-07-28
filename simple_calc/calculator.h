@@ -10,6 +10,8 @@
 #include <qcustomplot.h>
 #include <QVector>
 
+#define POINTS_SIZE 10001
+
 typedef mu::Parser Parser;
 
 QT_BEGIN_NAMESPACE
@@ -42,6 +44,9 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void xAxisChanged(QCPRange newRange);
+
+
 private:
     Ui::Calculator *ui;
     std::string tmp;
@@ -53,6 +58,7 @@ private:
     QCPGraph* graph;
     QVector<double> x, y;
     double varX;
+    bool isBadGraphExpr = true;
     enum class Mode{
         Default, Graphic
     };

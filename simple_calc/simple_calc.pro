@@ -35,7 +35,6 @@ DEPENDPATH += $$PWD/../build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug
 
 # Tell the qcustomplot header that it will be used as library:
 DEFINES += QCUSTOMPLOT_USE_LIBRARY
-
 # Link with debug version of qcustomplot if compiling in debug mode, else with release library:
 CONFIG(debug, release|debug) {
   win32:QCPLIB = qcustomplotd2

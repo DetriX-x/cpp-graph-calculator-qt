@@ -24,8 +24,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Calculator_t {
-    const uint offsetsAndSize[20];
-    char stringdata0[207];
+    const uint offsetsAndSize[26];
+    char stringdata0[238];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_Calculator_t, stringdata0) + ofs), len 
@@ -40,7 +40,10 @@ QT_MOC_LITERAL(83, 23), // "on_actionExit_triggered"
 QT_MOC_LITERAL(107, 23), // "on_actionHelp_triggered"
 QT_MOC_LITERAL(131, 26), // "on_actionDefault_triggered"
 QT_MOC_LITERAL(158, 26), // "on_actionGraphic_triggered"
-QT_MOC_LITERAL(185, 21) // "on_pushButton_clicked"
+QT_MOC_LITERAL(185, 21), // "on_pushButton_clicked"
+QT_MOC_LITERAL(207, 12), // "xAxisChanged"
+QT_MOC_LITERAL(220, 8), // "QCPRange"
+QT_MOC_LITERAL(229, 8) // "newRange"
 
     },
     "Calculator\0on_pushButton_clear_clicked\0"
@@ -48,7 +51,8 @@ QT_MOC_LITERAL(185, 21) // "on_pushButton_clicked"
     "on_actionExit_triggered\0on_actionHelp_triggered\0"
     "on_actionDefault_triggered\0"
     "on_actionGraphic_triggered\0"
-    "on_pushButton_clicked"
+    "on_pushButton_clicked\0xAxisChanged\0"
+    "QCPRange\0newRange"
 };
 #undef QT_MOC_LITERAL
 
@@ -58,7 +62,7 @@ static const uint qt_meta_data_Calculator[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -66,14 +70,15 @@ static const uint qt_meta_data_Calculator[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   62,    2, 0x08,    1 /* Private */,
-       3,    0,   63,    2, 0x08,    2 /* Private */,
-       4,    0,   64,    2, 0x08,    3 /* Private */,
-       5,    0,   65,    2, 0x08,    4 /* Private */,
-       6,    0,   66,    2, 0x08,    5 /* Private */,
-       7,    0,   67,    2, 0x08,    6 /* Private */,
-       8,    0,   68,    2, 0x08,    7 /* Private */,
-       9,    0,   69,    2, 0x08,    8 /* Private */,
+       1,    0,   68,    2, 0x08,    1 /* Private */,
+       3,    0,   69,    2, 0x08,    2 /* Private */,
+       4,    0,   70,    2, 0x08,    3 /* Private */,
+       5,    0,   71,    2, 0x08,    4 /* Private */,
+       6,    0,   72,    2, 0x08,    5 /* Private */,
+       7,    0,   73,    2, 0x08,    6 /* Private */,
+       8,    0,   74,    2, 0x08,    7 /* Private */,
+       9,    0,   75,    2, 0x08,    8 /* Private */,
+      10,    1,   76,    2, 0x08,    9 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -84,6 +89,7 @@ static const uint qt_meta_data_Calculator[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 11,   12,
 
        0        // eod
 };
@@ -102,10 +108,10 @@ void Calculator::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 5: _t->on_actionDefault_triggered(); break;
         case 6: _t->on_actionGraphic_triggered(); break;
         case 7: _t->on_pushButton_clicked(); break;
+        case 8: _t->xAxisChanged((*reinterpret_cast< std::add_pointer_t<QCPRange>>(_a[1]))); break;
         default: ;
         }
     }
-    (void)_a;
 }
 
 const QMetaObject Calculator::staticMetaObject = { {
@@ -116,7 +122,7 @@ const QMetaObject Calculator::staticMetaObject = { {
     nullptr,
 qt_incomplete_metaTypeArray<qt_meta_stringdata_Calculator_t
 , QtPrivate::TypeAndForceComplete<Calculator, std::true_type>
-, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
+, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QCPRange, std::false_type>
 
 
 >,
@@ -143,13 +149,13 @@ int Calculator::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 9)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }
