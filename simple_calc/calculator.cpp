@@ -57,18 +57,27 @@ Calculator::Calculator(QWidget *parent) // constructor
     connect(ui->pushButton_sum, &QPushButton::clicked, this, &Calculator::calc_key_handler);
     connect(ui->pushButton_dot, &QPushButton::clicked, this, &Calculator::calc_key_handler);
     connect(ui->pushButton_res, &QPushButton::clicked, this, &Calculator::calc_key_handler);
-
     ui->stackedWidget->setCurrentIndex(int(Mode::Default));
 
+    // setting up parsers
     parser.DefineConst("pi", M_PI);
     parser.DefineConst("exp", M_E);
+    graphParser.DefineConst("pi", M_PI);
+    graphParser.DefineConst("exp", M_E);
+    graphParser.DefineVar("x", &varX);
 
     // QCustomPlot
-    x.resize(1000);
+    ui->customPlot->setNoAntialiasingOnDrag(true);
+    x.resize(101);
+    y.resize(101);
+    for (int i = 0; i < x.size(); ++i)
+    {
+        x[i] = i / 50.0 - 1.0;
+    }
     // create and configure plottables:
     graph = ui->customPlot->addGraph();
     graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssNone, QPen(Qt::black, 1.5), QBrush(Qt::white), 9));
-    graph->setPen(QPen(QColor(120, 120, 120), 2));
+    graph->setPen(QPen(QColor(0, 180, 0), 2));
     // set some pens, brushes and backgrounds:
     ui->customPlot->xAxis->setBasePen(QPen(Qt::white, 1));
     ui->customPlot->yAxis->setBasePen(QPen(Qt::white, 1));
@@ -84,8 +93,10 @@ Calculator::Calculator(QWidget *parent) // constructor
     ui->customPlot->yAxis->grid()->setSubGridPen(QPen(QColor(80, 80, 80), 1, Qt::DotLine));
     ui->customPlot->xAxis->grid()->setSubGridVisible(true);
     ui->customPlot->yAxis->grid()->setSubGridVisible(true);
-    ui->customPlot->xAxis->setLabel("x");
-    ui->customPlot->yAxis->setLabel("y");
+    ui->customPlot->xAxis->setLabel("X");
+    ui->customPlot->yAxis->setLabel("Y");
+    ui->customPlot->xAxis->setLabelColor(Qt::white);
+    ui->customPlot->yAxis->setLabelColor(Qt::white);
     QLinearGradient plotGradient;
     plotGradient.setStart(0, 0);
     plotGradient.setFinalStop(0, 350);
@@ -204,5 +215,41 @@ void Calculator::on_actionDefault_triggered() // Default mode
 void Calculator::on_actionGraphic_triggered() // Graphic mode
 {
     ui->stackedWidget->setCurrentIndex(int(Mode::Graphic));
+}
+
+
+void Calculator::on_pushButton_clicked() // Draw Graph
+{
+    str = ui->lineEdit_expression->text();
+    tmp = str.toStdString();
+    graphParser.SetExpr(tmp);
+    double tRes;
+    try
+    {
+        tRes = graphParser.Eval();
+    }
+    catch(...)
+    {
+        ui->statusbar->showMessage("Error, expression is incorrect");
+        graph->setVisible(false);
+        ui->customPlot->replot();
+        return;
+    }
+    if(std::isinf(tRes) or std::isnan(tRes)) // division by zero handling
+    {
+        ui->statusbar->showMessage("Error, division by zero");
+        graph->setVisible(false);
+        ui->customPlot->replot();
+        return;
+    }
+    graph->setVisible(true);
+    ui->statusbar->clearMessage();
+    for(int i = 0; i < x.size(); ++i)
+    {
+        varX = x[i];
+        y[i] = graphParser.Eval();
+    }
+    graph->setData(x, y);
+    ui->customPlot->replot();
 }
 

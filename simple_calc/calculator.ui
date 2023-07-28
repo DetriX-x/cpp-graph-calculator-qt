@@ -19,7 +19,7 @@
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0">
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0">
     <item row="0" column="0" rowspan="2" colspan="4">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
@@ -1155,6 +1155,12 @@ QPushButton:pressed{
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <family>System-ui</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">QLineEdit{
 	background-color: #D3D3D3;
@@ -1194,6 +1200,9 @@ QPushButton:pressed{
           </property>
           <property name="text">
            <string>Draw</string>
+          </property>
+          <property name="shortcut">
+           <string>Return</string>
           </property>
          </widget>
         </item>

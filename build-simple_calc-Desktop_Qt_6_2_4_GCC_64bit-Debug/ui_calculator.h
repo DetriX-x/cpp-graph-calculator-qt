@@ -788,6 +788,7 @@ public:
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(lineEdit_expression->sizePolicy().hasHeightForWidth());
         lineEdit_expression->setSizePolicy(sizePolicy1);
+        lineEdit_expression->setFont(font);
         lineEdit_expression->setStyleSheet(QString::fromUtf8("QLineEdit{\n"
 "	background-color: #D3D3D3;\n"
 "	border: 1px solid gray;\n"
@@ -915,6 +916,9 @@ public:
         pushButton_res->setShortcut(QCoreApplication::translate("Calculator", "Return", nullptr));
 #endif // QT_CONFIG(shortcut)
         pushButton->setText(QCoreApplication::translate("Calculator", "Draw", nullptr));
+#if QT_CONFIG(shortcut)
+        pushButton->setShortcut(QCoreApplication::translate("Calculator", "Return", nullptr));
+#endif // QT_CONFIG(shortcut)
         menuMenu->setTitle(QCoreApplication::translate("Calculator", "Menu", nullptr));
     } // retranslateUi
 

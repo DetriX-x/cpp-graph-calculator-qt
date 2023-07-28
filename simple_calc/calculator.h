@@ -40,6 +40,8 @@ private slots:
 
     void on_actionGraphic_triggered();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::Calculator *ui;
     std::string tmp;
@@ -50,6 +52,7 @@ private:
     HelpWindow* hw = nullptr;
     QCPGraph* graph;
     QVector<double> x, y;
+    double varX;
     enum class Mode{
         Default, Graphic
     };
