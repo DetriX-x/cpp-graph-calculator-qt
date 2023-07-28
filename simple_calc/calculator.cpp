@@ -76,7 +76,7 @@ Calculator::Calculator(QWidget *parent) // constructor
     y.resize(POINTS_SIZE);
     for (int i = 0; i < x.size(); ++i)
     {
-        x[i] = i / 50.0 - 1.0;
+        x[i] = i / 500.0 - 1.0;
     }
     // create and configure plottables:
     graph = ui->customPlot->addGraph();
@@ -263,11 +263,11 @@ void Calculator::on_pushButton_clicked() // Draw Graph
 void Calculator::xAxisChanged(QCPRange newRange) // changed xAxis max or min value
 {
     if(isBadGraphExpr) return;
-    double val = (std::abs(newRange.upper) + std::abs(newRange.lower)) / 2;
     for(int i = 0; i < x.size(); ++i)
     {
-        x[i] = i;
+        x[i] = newRange.lower + i * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
         varX = x[i];
+        // if(std::isinf(varX.Eval))
         y[i] = graphParser.Eval();
     }
     graph->setData(x, y);
