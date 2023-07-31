@@ -23,7 +23,7 @@
     <item row="0" column="0" rowspan="2" colspan="4">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_default">
        <layout class="QGridLayout" name="gridLayout_2" rowstretch="5,3,3,3,3,3,3">

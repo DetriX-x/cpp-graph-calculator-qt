@@ -26,13 +26,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-# muParser lib
-unix:!macx: LIBS += -L$$PWD/../build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug/ -lmuparser
-
-INCLUDEPATH += $$PWD/../build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug
-DEPENDPATH += $$PWD/../build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug
-
-
 # Tell the qcustomplot header that it will be used as library:
 DEFINES += QCUSTOMPLOT_USE_LIBRARY
 # Link with debug version of qcustomplot if compiling in debug mode, else with release library:
@@ -43,4 +36,13 @@ CONFIG(debug, release|debug) {
   win32:QCPLIB = qcustomplot2
   else: QCPLIB = qcustomplot
 }
-LIBS += -L$$PWD/./ -l$$QCPLIB
+LIBS += -L$$PWD/../libs -l$$QCPLIB
+
+# muParser lib
+unix:!macx: LIBS += -L$$PWD/../libs -lmuparser
+INCLUDEPATH += $$PWD/../libs
+DEPENDPATH += $$PWD/../libs
+
+QMAKE_LFLAGS += -Wl,-rpath,'../libs'
+
+

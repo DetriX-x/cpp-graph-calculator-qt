@@ -871,7 +871,7 @@ public:
 
         retranslateUi(Calculator);
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(Calculator);

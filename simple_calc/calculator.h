@@ -10,7 +10,7 @@
 #include <qcustomplot.h>
 #include <QVector>
 
-#define POINTS_SIZE 10001
+#define POINTS_SIZE 1001
 
 typedef mu::Parser Parser;
 
