@@ -1,6 +1,8 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
 
+#define MUP_STRING_TYPE std::wstring
+
 #include <QMainWindow>
 #include <QtMath>
 #include <QMessageBox>
@@ -11,6 +13,7 @@
 #include <QVector>
 
 #define POINTS_SIZE 1001
+
 
 typedef mu::Parser Parser;
 
@@ -53,7 +56,7 @@ private slots:
 
 private:
     Ui::Calculator *ui;
-    std::string tmp;
+    std::wstring tmp;
     QString str;
     double result;
     Parser parser;

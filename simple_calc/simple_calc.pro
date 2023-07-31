@@ -39,11 +39,14 @@ CONFIG(debug, release|debug) {
 LIBS += -L$$PWD/../libs -l$$QCPLIB
 
 # muParser lib
-unix:!macx: LIBS += -L$$PWD/../libs -lmuparser
-INCLUDEPATH += $$PWD/../libs
-DEPENDPATH += $$PWD/../libs
 
 
 # enabling relative search of shared libraries --> IMPORTANT!!!!
 QMAKE_LFLAGS += -Wl,-rpath,'../libs'
+
+
+# muParser lib
+win32: LIBS += -L$$PWD/../libs/ -lmuParserCompilation
+INCLUDEPATH += $$PWD/../libs
+DEPENDPATH += $$PWD/../libs
 

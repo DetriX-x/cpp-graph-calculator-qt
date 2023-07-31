@@ -60,11 +60,11 @@ Calculator::Calculator(QWidget *parent) // constructor
     ui->stackedWidget->setCurrentIndex(int(Mode::Default));
 
     // setting up parsers
-    parser.DefineConst("pi", M_PI);
-    parser.DefineConst("exp", M_E);
-    graphParser.DefineConst("pi", M_PI);
-    graphParser.DefineConst("exp", M_E);
-    graphParser.DefineVar("x", &varX);
+    parser.DefineConst(L"pi", M_PI);
+    parser.DefineConst(L"exp", M_E);
+    graphParser.DefineConst(L"pi", M_PI);
+    graphParser.DefineConst(L"exp", M_E);
+    graphParser.DefineVar(L"x", &varX);
 
     // QCustomPlot
     ui->customPlot->setAttribute(Qt::WA_OpaquePaintEvent);
@@ -138,7 +138,7 @@ void Calculator::on_pushButton_clear_clicked() // clear button
 void Calculator::on_pushButton_res_clicked() // result button clicked
 {
     str = ui->display->text();
-    tmp = str.toStdString();
+    tmp = str.toStdWString();
     parser.SetExpr(tmp);
     try
     {
@@ -226,7 +226,7 @@ void Calculator::on_actionGraphic_triggered() // Graphic mode
 void Calculator::on_pushButton_clicked() // Draw Graph
 {
     str = ui->lineEdit_expression->text();
-    tmp = str.toStdString();
+    tmp = str.toStdWString();
     graphParser.SetExpr(tmp);
     double tRes;
     try
