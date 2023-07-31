@@ -43,6 +43,7 @@ unix:!macx: LIBS += -L$$PWD/../libs -lmuparser
 INCLUDEPATH += $$PWD/../libs
 DEPENDPATH += $$PWD/../libs
 
-QMAKE_LFLAGS += -Wl,-rpath,'../libs'
 
+# enabling relative search of shared libraries --> IMPORTANT!!!!
+QMAKE_LFLAGS += -Wl,-rpath,'../libs'
 

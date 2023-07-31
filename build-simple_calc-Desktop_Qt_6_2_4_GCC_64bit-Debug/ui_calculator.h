@@ -32,6 +32,8 @@ public:
     QAction *actionGraphic;
     QAction *actionHelp;
     QAction *actionExit;
+    QAction *actionOn;
+    QAction *actionOff;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QStackedWidget *stackedWidget;
@@ -64,11 +66,12 @@ public:
     QPushButton *pushButton_res;
     QWidget *page_graph;
     QGridLayout *gridLayout_3;
+    QCustomPlot *customPlot;
     QLineEdit *lineEdit_expression;
     QPushButton *pushButton;
-    QCustomPlot *customPlot;
     QMenuBar *menubar;
     QMenu *menuMenu;
+    QMenu *menuAntialiasing;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *Calculator)
@@ -87,6 +90,10 @@ public:
         actionHelp->setObjectName(QString::fromUtf8("actionHelp"));
         actionExit = new QAction(Calculator);
         actionExit->setObjectName(QString::fromUtf8("actionExit"));
+        actionOn = new QAction(Calculator);
+        actionOn->setObjectName(QString::fromUtf8("actionOn"));
+        actionOff = new QAction(Calculator);
+        actionOff->setObjectName(QString::fromUtf8("actionOff"));
         centralwidget = new QWidget(Calculator);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -781,6 +788,12 @@ public:
         page_graph->setObjectName(QString::fromUtf8("page_graph"));
         gridLayout_3 = new QGridLayout(page_graph);
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        customPlot = new QCustomPlot(page_graph);
+        customPlot->setObjectName(QString::fromUtf8("customPlot"));
+        customPlot->setStyleSheet(QString::fromUtf8("background-color: rgb(192, 191, 188);"));
+
+        gridLayout_3->addWidget(customPlot, 3, 0, 1, 2);
+
         lineEdit_expression = new QLineEdit(page_graph);
         lineEdit_expression->setObjectName(QString::fromUtf8("lineEdit_expression"));
         QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -795,7 +808,7 @@ public:
 "	color: #555555;\n"
 "}"));
 
-        gridLayout_3->addWidget(lineEdit_expression, 0, 0, 1, 1);
+        gridLayout_3->addWidget(lineEdit_expression, 0, 0, 3, 1);
 
         pushButton = new QPushButton(page_graph);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
@@ -823,21 +836,17 @@ public:
 "	color: #FFF\n"
 "}"));
 
-        gridLayout_3->addWidget(pushButton, 0, 1, 1, 1);
-
-        customPlot = new QCustomPlot(page_graph);
-        customPlot->setObjectName(QString::fromUtf8("customPlot"));
-        customPlot->setStyleSheet(QString::fromUtf8("background-color: rgb(192, 191, 188);"));
-
-        gridLayout_3->addWidget(customPlot, 1, 0, 1, 2);
+        gridLayout_3->addWidget(pushButton, 0, 1, 3, 1);
 
         gridLayout_3->setRowStretch(0, 2);
-        gridLayout_3->setRowStretch(1, 20);
+        gridLayout_3->setRowStretch(1, 2);
+        gridLayout_3->setRowStretch(2, 2);
+        gridLayout_3->setRowStretch(3, 50);
         gridLayout_3->setColumnStretch(0, 12);
         gridLayout_3->setColumnStretch(1, 3);
         stackedWidget->addWidget(page_graph);
 
-        gridLayout->addWidget(stackedWidget, 0, 0, 2, 4);
+        gridLayout->addWidget(stackedWidget, 0, 0, 1, 1);
 
         Calculator->setCentralWidget(centralwidget);
         menubar = new QMenuBar(Calculator);
@@ -852,6 +861,8 @@ public:
 "color: #DDD;"));
         menuMenu = new QMenu(menubar);
         menuMenu->setObjectName(QString::fromUtf8("menuMenu"));
+        menuAntialiasing = new QMenu(menuMenu);
+        menuAntialiasing->setObjectName(QString::fromUtf8("menuAntialiasing"));
         Calculator->setMenuBar(menubar);
         statusbar = new QStatusBar(Calculator);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -866,12 +877,15 @@ public:
         menubar->addAction(menuMenu->menuAction());
         menuMenu->addAction(actionDefault);
         menuMenu->addAction(actionGraphic);
+        menuMenu->addAction(menuAntialiasing->menuAction());
         menuMenu->addAction(actionHelp);
         menuMenu->addAction(actionExit);
+        menuAntialiasing->addAction(actionOn);
+        menuAntialiasing->addAction(actionOff);
 
         retranslateUi(Calculator);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(Calculator);
@@ -884,6 +898,8 @@ public:
         actionGraphic->setText(QCoreApplication::translate("Calculator", "Graphic mode", nullptr));
         actionHelp->setText(QCoreApplication::translate("Calculator", "Help", nullptr));
         actionExit->setText(QCoreApplication::translate("Calculator", "Exit", nullptr));
+        actionOn->setText(QCoreApplication::translate("Calculator", "On", nullptr));
+        actionOff->setText(QCoreApplication::translate("Calculator", "Off", nullptr));
         pushButton_6->setText(QCoreApplication::translate("Calculator", "6", nullptr));
         pushButton_2->setText(QCoreApplication::translate("Calculator", "2", nullptr));
         pushButton_degree->setText(QCoreApplication::translate("Calculator", "^", nullptr));
@@ -920,6 +936,7 @@ public:
         pushButton->setShortcut(QCoreApplication::translate("Calculator", "Return", nullptr));
 #endif // QT_CONFIG(shortcut)
         menuMenu->setTitle(QCoreApplication::translate("Calculator", "Menu", nullptr));
+        menuAntialiasing->setTitle(QCoreApplication::translate("Calculator", "Antialiasing", nullptr));
     } // retranslateUi
 
 };

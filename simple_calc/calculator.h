@@ -47,6 +47,10 @@ private slots:
     void xAxisChanged(QCPRange newRange);
 
 
+    void on_actionOn_triggered();
+
+    void on_actionOff_triggered();
+
 private:
     Ui::Calculator *ui;
     std::string tmp;

@@ -78,17 +78,18 @@ Calculator::Calculator(QWidget *parent) // constructor
     {
         x[i] = i / 500.0 - 1.0;
     }
+
     // create and configure plottables:
     graph = ui->customPlot->addGraph();
     graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssNone, QPen(Qt::black, 1.5), QBrush(Qt::white), 9));
     graph->setPen(QPen(QColor(0, 180, 0), 2));
     // set some pens, brushes and backgrounds:
-    ui->customPlot->xAxis->setBasePen(QPen(Qt::white, 1));
-    ui->customPlot->yAxis->setBasePen(QPen(Qt::white, 1));
-    ui->customPlot->xAxis->setTickPen(QPen(Qt::white, 1));
-    ui->customPlot->yAxis->setTickPen(QPen(Qt::white, 1));
-    ui->customPlot->xAxis->setSubTickPen(QPen(Qt::white, 1));
-    ui->customPlot->yAxis->setSubTickPen(QPen(Qt::white, 1));
+    ui->customPlot->xAxis->setBasePen(QPen(Qt::white, 2));
+    ui->customPlot->yAxis->setBasePen(QPen(Qt::white, 2));
+    ui->customPlot->xAxis->setTickPen(QPen(Qt::white, 2));
+    ui->customPlot->yAxis->setTickPen(QPen(Qt::white, 2));
+    ui->customPlot->xAxis->setSubTickPen(QPen(Qt::white, 2));
+    ui->customPlot->yAxis->setSubTickPen(QPen(Qt::white, 2));
     ui->customPlot->xAxis->setTickLabelColor(Qt::white);
     ui->customPlot->yAxis->setTickLabelColor(Qt::white);
     ui->customPlot->xAxis->grid()->setPen(QPen(QColor(140, 140, 140), 1, Qt::DotLine));
@@ -148,9 +149,9 @@ void Calculator::on_pushButton_res_clicked() // result button clicked
         ui->statusbar->showMessage("Error, expression is incorrect");
         return;
     }
-    if(std::isinf(result) or std::isnan(result)) // division by zero handling
+    if(std::isinf(result) or std::isnan(result)) // error
     {
-        ui->statusbar->showMessage("Error, division by zero");
+        ui->statusbar->showMessage("Error, expression is incorrect");
         return;
     }
     ui->statusbar->clearMessage();
@@ -242,7 +243,7 @@ void Calculator::on_pushButton_clicked() // Draw Graph
     }
     if(std::isinf(tRes) or std::isnan(tRes)) // division by zero handling
     {
-        ui->statusbar->showMessage("Error, division by zero");
+        ui->statusbar->showMessage("Error, expression is incorrect");
         graph->setVisible(false);
         ui->customPlot->replot();
         isBadGraphExpr = true;
@@ -262,16 +263,36 @@ void Calculator::on_pushButton_clicked() // Draw Graph
 
 void Calculator::xAxisChanged(QCPRange newRange) // changed xAxis max or min value
 {
-    if(isBadGraphExpr) return;
-    for(int i = 0; i < x.size(); ++i)
+    if(isBadGraphExpr)
     {
-        x[i] = newRange.lower + i * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
-        varX = x[i];
-        // if(std::isinf(varX.Eval))
-        y[i] = graphParser.Eval();
+        for(int i = 0; i < x.size(); ++i)
+        {
+            x[i] = newRange.lower + i * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
+        }
     }
-    graph->setData(x, y);
+    else
+    {
+        for(int i = 0; i < x.size(); ++i)
+        {
+            x[i] = newRange.lower + i * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
+            varX = x[i];
+            y[i] = graphParser.Eval();
+        }
+        graph->setData(x, y);
+        ui->customPlot->replot();
+    }
+}
+
+void Calculator::on_actionOn_triggered() // toggle antialiasing on
+{
+    ui->customPlot->setNotAntialiasedElements(QCP::aeNone); // some optimisation
     ui->customPlot->replot();
 }
 
+
+void Calculator::on_actionOff_triggered() // toggle antialiasing off
+{
+    ui->customPlot->setNotAntialiasedElements(QCP::aeAll); // some optimisation
+    ui->customPlot->replot();
+}
 
