@@ -48,7 +48,7 @@ public:
     QPushButton *pushButton_sqrt;
     QPushButton *pushButton_bracket_left;
     QPushButton *pushButton_Pi;
-    QPushButton *pushButton_percent;
+    QPushButton *pushButton_exp;
     QPushButton *pushButton_7;
     QPushButton *pushButton_bracket_right;
     QPushButton *pushButton_1;
@@ -344,13 +344,13 @@ public:
 
         gridLayout_2->addWidget(pushButton_Pi, 2, 2, 1, 1);
 
-        pushButton_percent = new QPushButton(page_default);
-        pushButton_percent->setObjectName(QString::fromUtf8("pushButton_percent"));
-        sizePolicy.setHeightForWidth(pushButton_percent->sizePolicy().hasHeightForWidth());
-        pushButton_percent->setSizePolicy(sizePolicy);
-        pushButton_percent->setMinimumSize(QSize(55, 55));
-        pushButton_percent->setFont(font);
-        pushButton_percent->setStyleSheet(QString::fromUtf8("QPushButton{\n"
+        pushButton_exp = new QPushButton(page_default);
+        pushButton_exp->setObjectName(QString::fromUtf8("pushButton_exp"));
+        sizePolicy.setHeightForWidth(pushButton_exp->sizePolicy().hasHeightForWidth());
+        pushButton_exp->setSizePolicy(sizePolicy);
+        pushButton_exp->setMinimumSize(QSize(55, 55));
+        pushButton_exp->setFont(font);
+        pushButton_exp->setStyleSheet(QString::fromUtf8("QPushButton{\n"
 "	background-color: #C0C0C0;\n"
 "	border: 1px solid gray;\n"
 "	padding: 5px;\n"
@@ -369,7 +369,7 @@ public:
 "	color: #FFF\n"
 "}"));
 
-        gridLayout_2->addWidget(pushButton_percent, 1, 0, 1, 1);
+        gridLayout_2->addWidget(pushButton_exp, 1, 0, 1, 1);
 
         pushButton_7 = new QPushButton(page_default);
         pushButton_7->setObjectName(QString::fromUtf8("pushButton_7"));
@@ -885,7 +885,7 @@ public:
 
         retranslateUi(Calculator);
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(Calculator);
@@ -909,7 +909,7 @@ public:
         pushButton_sqrt->setText(QCoreApplication::translate("Calculator", "\342\210\232", nullptr));
         pushButton_bracket_left->setText(QCoreApplication::translate("Calculator", "(", nullptr));
         pushButton_Pi->setText(QCoreApplication::translate("Calculator", "\360\235\234\213", nullptr));
-        pushButton_percent->setText(QCoreApplication::translate("Calculator", "%", nullptr));
+        pushButton_exp->setText(QCoreApplication::translate("Calculator", "exp", nullptr));
         pushButton_7->setText(QCoreApplication::translate("Calculator", "7", nullptr));
         pushButton_bracket_right->setText(QCoreApplication::translate("Calculator", ")", nullptr));
         pushButton_1->setText(QCoreApplication::translate("Calculator", "1", nullptr));
