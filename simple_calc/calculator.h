@@ -10,7 +10,7 @@
 #include <qcustomplot.h>
 #include <QVector>
 
-#define POINTS_SIZE 1001
+#define POINTS_SIZE 10001
 
 typedef mu::Parser Parser;
 
@@ -25,6 +25,7 @@ class Calculator : public QMainWindow
 public:
     Calculator(QWidget *parent = nullptr);
     ~Calculator();
+
 
 
 private slots:
@@ -44,14 +45,30 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void xAxisChanged(QCPRange newRange);
+    void xAxisChanged(const QCPRange &newRange);
 
+    void deleteHelpMenu();
 
     void on_actionOn_triggered();
 
     void on_actionOff_triggered();
 
 private:
+
+    bool diffSigns(double a, double b)
+    {
+        if(std::isnan(a) || std::isnan(b))
+            return false;
+        if(std::signbit(a) && std::signbit(b))
+            return false;
+        else if(!std::signbit(a) && !std::signbit(b))
+            return false;
+        else
+            return true;
+        return true;
+    }
+
+
     Ui::Calculator *ui;
     std::string tmp;
     QString str;

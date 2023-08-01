@@ -19,7 +19,7 @@ Calculator::Calculator(QWidget *parent) // constructor
     ui->pushButton_7->setProperty("name", '7');
     ui->pushButton_8->setProperty("name", '8');
     ui->pushButton_9->setProperty("name", '9');
-    ui->pushButton_percent->setProperty("name", '%');
+    ui->pushButton_exp->setProperty("name", 'e');
     ui->pushButton_sqrt->setProperty("name", 's');
     ui->pushButton_degree->setProperty("name", '^');
     ui->pushButton_Pi->setProperty("name", 'p');
@@ -45,7 +45,7 @@ Calculator::Calculator(QWidget *parent) // constructor
     connect(ui->pushButton_7, &QPushButton::clicked, this, &Calculator::calc_key_handler);
     connect(ui->pushButton_8, &QPushButton::clicked, this, &Calculator::calc_key_handler);
     connect(ui->pushButton_9, &QPushButton::clicked, this, &Calculator::calc_key_handler);
-    connect(ui->pushButton_percent, &QPushButton::clicked, this, &Calculator::calc_key_handler);
+    connect(ui->pushButton_exp, &QPushButton::clicked, this, &Calculator::calc_key_handler);
     connect(ui->pushButton_sqrt, &QPushButton::clicked, this, &Calculator::calc_key_handler);
     connect(ui->pushButton_degree, &QPushButton::clicked, this, &Calculator::calc_key_handler);
     connect(ui->pushButton_Pi, &QPushButton::clicked, this, &Calculator::calc_key_handler);
@@ -66,9 +66,6 @@ Calculator::Calculator(QWidget *parent) // constructor
     graphParser.DefineConst("exp", M_E);
     graphParser.DefineVar("x", &varX);
 
-    // QCustomPlot
-    ui->customPlot->setAttribute(Qt::WA_OpaquePaintEvent);
-    ui->customPlot->setNotAntialiasedElements(QCP::aeAll); // some optimisation
 
     connect(ui->customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(xAxisChanged(QCPRange)));
 
@@ -83,6 +80,11 @@ Calculator::Calculator(QWidget *parent) // constructor
     graph = ui->customPlot->addGraph();
     graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssNone, QPen(Qt::black, 1.5), QBrush(Qt::white), 9));
     graph->setPen(QPen(QColor(0, 180, 0), 2));
+    graph->setAdaptiveSampling(false);
+    // QCustomPlot
+    ui->customPlot->setAttribute(Qt::WA_OpaquePaintEvent);
+    ui->customPlot->setNotAntialiasedElements(QCP::aeAll); // some optimisation
+    ui->customPlot->setNoAntialiasingOnDrag(true); // some optimisation
     // set some pens, brushes and backgrounds:
     ui->customPlot->xAxis->setBasePen(QPen(Qt::white, 2));
     ui->customPlot->yAxis->setBasePen(QPen(Qt::white, 2));
@@ -155,7 +157,7 @@ void Calculator::on_pushButton_res_clicked() // result button clicked
         return;
     }
     ui->statusbar->clearMessage();
-    ui->display->setText(QString::number(result, 'f', 4));
+    ui->display->setText(QString::number(result));
 }
 
 void Calculator::calc_key_handler()
@@ -176,7 +178,7 @@ void Calculator::calc_key_handler()
     case '8': ui->display->insert("8"); break;
     case '9': ui->display->insert("9"); break;
     case 's': ui->display->insert("sqrt("); break;
-    case '%': ui->display->insert("%"); break;
+    case 'e': ui->display->insert("exp"); break;
     case '^': ui->display->insert("^"); break;
     case '(': ui->display->insert("("); break;
     case ')': ui->display->insert(")"); break;
@@ -202,12 +204,18 @@ void Calculator::on_actionHelp_triggered() // help window open
 {
     if(!hw)
     {
-      hw = new HelpWindow(this);
-      hw->setWindowModality(Qt::NonModal);
-      hw->show();
-      return;
+        hw = new HelpWindow(this);
+        connect(hw, &QDialog::finished, this, &Calculator::deleteHelpMenu);
+        hw->setWindowModality(Qt::NonModal);
+        hw->show();
     }
-    hw->activateWindow();
+}
+
+
+void Calculator::deleteHelpMenu()
+{
+    delete hw;
+    hw = nullptr;
 }
 
 
@@ -228,20 +236,11 @@ void Calculator::on_pushButton_clicked() // Draw Graph
     str = ui->lineEdit_expression->text();
     tmp = str.toStdString();
     graphParser.SetExpr(tmp);
-    double tRes;
     try
     {
-        tRes = graphParser.Eval();
+        graphParser.Eval();
     }
     catch(...)
-    {
-        ui->statusbar->showMessage("Error, expression is incorrect");
-        graph->setVisible(false);
-        ui->customPlot->replot();
-        isBadGraphExpr = true;
-        return;
-    }
-    if(std::isinf(tRes) or std::isnan(tRes)) // division by zero handling
     {
         ui->statusbar->showMessage("Error, expression is incorrect");
         graph->setVisible(false);
@@ -252,31 +251,29 @@ void Calculator::on_pushButton_clicked() // Draw Graph
     isBadGraphExpr = false;
     graph->setVisible(true);
     ui->statusbar->clearMessage();
-    for(int i = 0; i < x.size(); ++i)
-    {
-        varX = x[i];
-        y[i] = graphParser.Eval();
-    }
-    graph->setData(x, y);
-    ui->customPlot->replot();
-}
 
-void Calculator::xAxisChanged(QCPRange newRange) // changed xAxis max or min value
+    xAxisChanged(ui->customPlot->xAxis->range());
+}
+void Calculator::xAxisChanged(const QCPRange& newRange) // changed xAxis max or min value
 {
     if(isBadGraphExpr)
     {
-        for(int i = 0; i < x.size(); ++i)
-        {
-            x[i] = newRange.lower + i * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
-        }
+        return;
     }
     else
     {
-        for(int i = 0; i < x.size(); ++i)
+        x[0] = newRange.lower + 0 * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
+        varX = x[0];
+        y[0] = graphParser.Eval();
+        for(int i = 1; i < x.size(); ++i)
         {
             x[i] = newRange.lower + i * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
             varX = x[i];
             y[i] = graphParser.Eval();
+            if(diffSigns(y[i], y[i-1]) && abs(y[i]) + abs(y[i-1]) > 1.0)
+            {
+                y[i] = std::numeric_limits<double>::quiet_NaN();
+            }
         }
         graph->setData(x, y);
         ui->customPlot->replot();
