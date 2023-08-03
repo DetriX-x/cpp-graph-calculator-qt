@@ -8,8 +8,8 @@
 
 #include <memory>
 #include "../simple_calc/calculator.h"
-#include <QtGui/qtextcursor.h>
 #include <QScreen>
+#include <QtGui/qtextcursor.h>
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -40,23 +40,23 @@ QT_MOC_LITERAL(83, 23), // "on_actionExit_triggered"
 QT_MOC_LITERAL(107, 23), // "on_actionHelp_triggered"
 QT_MOC_LITERAL(131, 26), // "on_actionDefault_triggered"
 QT_MOC_LITERAL(158, 26), // "on_actionGraphic_triggered"
-QT_MOC_LITERAL(185, 21), // "on_pushButton_clicked"
-QT_MOC_LITERAL(207, 12), // "xAxisChanged"
-QT_MOC_LITERAL(220, 8), // "QCPRange"
-QT_MOC_LITERAL(229, 8), // "newRange"
-QT_MOC_LITERAL(238, 14), // "deleteHelpMenu"
-QT_MOC_LITERAL(253, 21), // "on_actionOn_triggered"
-QT_MOC_LITERAL(275, 22) // "on_actionOff_triggered"
+QT_MOC_LITERAL(185, 12), // "xAxisChanged"
+QT_MOC_LITERAL(198, 8), // "QCPRange"
+QT_MOC_LITERAL(207, 8), // "newRange"
+QT_MOC_LITERAL(216, 14), // "deleteHelpMenu"
+QT_MOC_LITERAL(231, 21), // "on_actionOn_triggered"
+QT_MOC_LITERAL(253, 22), // "on_actionOff_triggered"
+QT_MOC_LITERAL(276, 21) // "on_pushButton_clicked"
 
     },
     "Calculator\0on_pushButton_clear_clicked\0"
     "\0on_pushButton_res_clicked\0calc_key_handler\0"
     "on_actionExit_triggered\0on_actionHelp_triggered\0"
     "on_actionDefault_triggered\0"
-    "on_actionGraphic_triggered\0"
-    "on_pushButton_clicked\0xAxisChanged\0"
+    "on_actionGraphic_triggered\0xAxisChanged\0"
     "QCPRange\0newRange\0deleteHelpMenu\0"
-    "on_actionOn_triggered\0on_actionOff_triggered"
+    "on_actionOn_triggered\0on_actionOff_triggered\0"
+    "on_pushButton_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -81,8 +81,8 @@ static const uint qt_meta_data_Calculator[] = {
        6,    0,   90,    2, 0x08,    5 /* Private */,
        7,    0,   91,    2, 0x08,    6 /* Private */,
        8,    0,   92,    2, 0x08,    7 /* Private */,
-       9,    0,   93,    2, 0x08,    8 /* Private */,
-      10,    1,   94,    2, 0x08,    9 /* Private */,
+       9,    1,   93,    2, 0x08,    8 /* Private */,
+      12,    0,   96,    2, 0x08,   10 /* Private */,
       13,    0,   97,    2, 0x08,   11 /* Private */,
       14,    0,   98,    2, 0x08,   12 /* Private */,
       15,    0,   99,    2, 0x08,   13 /* Private */,
@@ -95,8 +95,8 @@ static const uint qt_meta_data_Calculator[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 10,   11,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 11,   12,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -117,11 +117,11 @@ void Calculator::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 4: _t->on_actionHelp_triggered(); break;
         case 5: _t->on_actionDefault_triggered(); break;
         case 6: _t->on_actionGraphic_triggered(); break;
-        case 7: _t->on_pushButton_clicked(); break;
-        case 8: _t->xAxisChanged((*reinterpret_cast< std::add_pointer_t<QCPRange>>(_a[1]))); break;
-        case 9: _t->deleteHelpMenu(); break;
-        case 10: _t->on_actionOn_triggered(); break;
-        case 11: _t->on_actionOff_triggered(); break;
+        case 7: _t->xAxisChanged((*reinterpret_cast< std::add_pointer_t<QCPRange>>(_a[1]))); break;
+        case 8: _t->deleteHelpMenu(); break;
+        case 9: _t->on_actionOn_triggered(); break;
+        case 10: _t->on_actionOff_triggered(); break;
+        case 11: _t->on_pushButton_clicked(); break;
         default: ;
         }
     }
@@ -135,7 +135,7 @@ const QMetaObject Calculator::staticMetaObject = { {
     nullptr,
 qt_incomplete_metaTypeArray<qt_meta_stringdata_Calculator_t
 , QtPrivate::TypeAndForceComplete<Calculator, std::true_type>
-, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<const QCPRange &, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
+, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<const QCPRange &, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
 
 
 >,

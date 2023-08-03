@@ -7,7 +7,27 @@ Calculator::Calculator(QWidget *parent) // constructor
 {
     ui->setupUi(this);
     ui->display->setPlaceholderText(QString("Type here..."));
-    ui->lineEdit_expression->setPlaceholderText(QString("Enter an expression..."));
+    ui->lineEdit_expression->setPlaceholderText(QString("Enter a f(x) expression..."));
+    ui->lineEdit_expression_2->setPlaceholderText(QString("Enter a f(x) expression..."));
+    LEArray[0] = ui->lineEdit_expression;
+    LEArray[1] = ui->lineEdit_expression_2;
+    LEArray[1]->setVisible(false);
+    connect(LEArray[0], &QLineEdit::textChanged, this, &Calculator::LEChanged);
+    connect(LEArray[1], &QLineEdit::textChanged, this, &Calculator::LEChanged);
+    for(int i = 2; i < LE_COUNT; ++i)
+    {
+        LEArray[i] = new QLineEdit(this);
+        LEArray[i]->setPlaceholderText(QString("Enter a f(x) expression..."));
+        LEArray[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        LEArray[i]->setStyleSheet("QLineEdit{\n	background-color: #D3D3D3;"
+                                  "\n	border: 1px solid gray;"
+                                  "\n	color: #555555;\n}");
+        LEArray[i]->setFont(QFont("System-ui", 11));
+        LEArray[i]->setPlaceholderText(QString("Enter a f(x) expression..."));
+        ui->verticalLayout_LE->addWidget(LEArray[i]);
+        LEArray[i]->setVisible(false);
+        connect(LEArray[i], &QLineEdit::textChanged, this, &Calculator::LEChanged);
+    }
     // setting names to buttons
     ui->pushButton_0->setProperty("name", '0');
     ui->pushButton_1->setProperty("name", '1');
@@ -60,31 +80,49 @@ Calculator::Calculator(QWidget *parent) // constructor
     ui->stackedWidget->setCurrentIndex(int(Mode::Default));
 
     // setting up parsers
-    parser.DefineConst("pi", M_PI);
+    parser.DefineConst("pi", I_PI); // more accurate that M_PI
     parser.DefineConst("exp", M_E);
-    graphParser.DefineConst("pi", M_PI);
-    graphParser.DefineConst("exp", M_E);
-    graphParser.DefineVar("x", &varX);
+    parser.DefineFun("cos", Icos);
+    parser.DefineFun("sin", Isin);
+    parser.DefineFun("tan", Itan);
+    parser.DefineFun("ctan", Ictan);
+
+    for(int i = 0; i < LE_COUNT + 1; ++i)
+    {
+        graphParser[i].DefineConst("pi", M_PI);
+        graphParser[i].DefineConst("exp", M_E);
+        graphParser[i].DefineVar("x", &(varX[i]));
+    }
 
 
-    connect(ui->customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(xAxisChanged(QCPRange)));
-
+    // initialiasing coordinates
     x.resize(POINTS_SIZE);
-    y.resize(POINTS_SIZE);
+    vecY.resize(LE_COUNT);
+    for (int i = 0; i < LE_COUNT; ++i)
+    {
+        vecY[i].resize(POINTS_SIZE);
+    }
     for (int i = 0; i < x.size(); ++i)
     {
         x[i] = i / 500.0 - 1.0;
     }
-
-    // create and configure plottables:
-    graph = ui->customPlot->addGraph();
-    graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssNone, QPen(Qt::black, 1.5), QBrush(Qt::white), 9));
-    graph->setPen(QPen(QColor(0, 180, 0), 2));
-    graph->setAdaptiveSampling(false);
     // QCustomPlot
     ui->customPlot->setAttribute(Qt::WA_OpaquePaintEvent);
-    ui->customPlot->setNotAntialiasedElements(QCP::aeAll); // some optimisation
-    ui->customPlot->setNoAntialiasingOnDrag(true); // some optimisation
+    ui->customPlot->setOpenGl(true);
+    ui->customPlot->setNoAntialiasingOnDrag(false); // cause opengl works
+    connect(ui->customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(xAxisChanged(QCPRange)));
+    // create and configure plottables:
+    for(int i = 0; i < LE_COUNT; i++)
+    {
+        graph[i] = ui->customPlot->addGraph();
+        //graph[i]->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssNone, QPen(Qt::black, 1.5), QBrush(Qt::white), 9));
+        graph[i]->setAdaptiveSampling(false); // !IMPORTANT -- for no optimization of gap(nan) points
+    }
+    graph[0]->setPen(QPen(QColor(0, 180, 0), 2));
+    graph[1]->setPen(QPen(QColor(180, 0, 0), 2));
+    graph[2]->setPen(QPen(QColor(0, 0, 180), 2));
+    graph[3]->setPen(QPen(QColor(160, 75, 135), 2));
+    graph[4]->setPen(QPen(QColor(200, 160, 75), 2));
     // set some pens, brushes and backgrounds:
     ui->customPlot->xAxis->setBasePen(QPen(Qt::white, 2));
     ui->customPlot->yAxis->setBasePen(QPen(Qt::white, 2));
@@ -120,9 +158,9 @@ Calculator::Calculator(QWidget *parent) // constructor
     ui->customPlot->xAxis->setRange(-1, 1);
     ui->customPlot->yAxis->setRange(-1, 1);
 
-
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 }
+
 
 Calculator::~Calculator() // destructor
 {
@@ -139,9 +177,8 @@ void Calculator::on_pushButton_clear_clicked() // clear button
 
 void Calculator::on_pushButton_res_clicked() // result button clicked
 {
-    str = ui->display->text();
-    tmp = str.toStdString();
-    parser.SetExpr(tmp);
+    str = ui->display->text().toStdString();
+    parser.SetExpr(str);
     try
     {
         result = parser.Eval();
@@ -159,6 +196,7 @@ void Calculator::on_pushButton_res_clicked() // result button clicked
     ui->statusbar->clearMessage();
     ui->display->setText(QString::number(result));
 }
+
 
 void Calculator::calc_key_handler()
 {
@@ -231,54 +269,104 @@ void Calculator::on_actionGraphic_triggered() // Graphic mode
 }
 
 
-void Calculator::on_pushButton_clicked() // Draw Graph
+bool Calculator::checkLE()
 {
-    str = ui->lineEdit_expression->text();
-    tmp = str.toStdString();
-    graphParser.SetExpr(tmp);
+    bool fl = true;
+    for(int i =0; i < currentLEIndex; ++i)
+    {
+        str = LEArray[i]->text().toStdString();
+        graphParser[i].SetExpr(str);
+        try
+        {
+            graphParser[i].Eval();
+        }
+        catch(...)
+        {
+            LEArray[i]->setStyleSheet("background-color: #AE0000; border: 1px solid red; color: #000;");
+            fl = false;
+            continue;
+        }
+        LEArray[i]->setStyleSheet("background-color: #D3D3D3; border: 1px solid gray; color: #555555;");
+    }
+    return fl;
+}
+
+
+void Calculator::LEChanged(const QString arg)
+{
+    QLineEdit* le = qobject_cast<QLineEdit*>(sender());
+    le->setStyleSheet("background-color: #D3D3D3; border: 1px solid gray; color: #555555;");
+    graphParser[5].SetExpr(arg.toStdString());
     try
     {
-        graphParser.Eval();
+        graphParser[5].Eval();
     }
     catch(...)
     {
+        le->setStyleSheet("background-color: #AE0000; border: 1px solid red; color: #000;");
+        return;
+    }
+}
+
+
+void Calculator::on_pushButton_draw_clicked() // Draw graph
+{
+    //
+    bool ok = checkLE();
+    if(!ok)
+    {
         ui->statusbar->showMessage("Error, expression is incorrect");
-        graph->setVisible(false);
+        for(int i = 0; i < currentLEIndex; ++i)
+        {
+            graph[i]->setVisible(false);
+        }
         ui->customPlot->replot();
         isBadGraphExpr = true;
         return;
     }
+    for(int i = 0; i < currentLEIndex; ++i)
+    {
+        graph[i]->setVisible(true);
+    }
     isBadGraphExpr = false;
-    graph->setVisible(true);
     ui->statusbar->clearMessage();
-
     xAxisChanged(ui->customPlot->xAxis->range());
 }
+
+
 void Calculator::xAxisChanged(const QCPRange& newRange) // changed xAxis max or min value
 {
     if(isBadGraphExpr)
     {
         return;
     }
-    else
+    // vecY[j][i] - double value of j graph y coordinate
+    // formula of recalculating of current x[i] coordinate accroding to new xAxis range
+    varX[0] = x[0] = newRange.lower + 0 * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1));
+    for(int j = 0; j < currentLEIndex; ++j) // for every graph
     {
-        x[0] = newRange.lower + 0 * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
-        varX = x[0];
-        y[0] = graphParser.Eval();
-        for(int i = 1; i < x.size(); ++i)
+        vecY[j][0] = graphParser[j].Eval();
+        for(int i = 1; i < x.size(); ++i) // calculate every coordinate
         {
-            x[i] = newRange.lower + i * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
-            varX = x[i];
-            y[i] = graphParser.Eval();
-            if(diffSigns(y[i], y[i-1]) && abs(y[i]) + abs(y[i-1]) > 1.0)
+            varX[j] = x[i] = newRange.lower + i * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
+            vecY[j][i] = graphParser[j].Eval();
+            if(isMulNext) // if on prev step gap was detected
             {
-                y[i] = std::numeric_limits<double>::quiet_NaN();
+                vecY[j][i] *= ACTUALLY_BIG_NUMBER;
+                isMulNext = false;
+            }
+            if(diffSigns(vecY[j][i], vecY[j][i-1]) && abs(vecY[j][i]) + abs(vecY[j][i-1]) > 1.0) // gap detected
+            {
+                vecY[j][i] = std::numeric_limits<double>::quiet_NaN(); // gap point
+                vecY[j][i - 1] *= ACTUALLY_BIG_NUMBER; // prev should be super big or super small
+                isMulNext = true; // NEXT should be super big or super small
             }
         }
-        graph->setData(x, y);
-        ui->customPlot->replot();
+        graph[j]->setData(x, vecY[j]);
     }
+    ui->customPlot->replot();
 }
+
 
 void Calculator::on_actionOn_triggered() // toggle antialiasing on
 {
@@ -293,3 +381,24 @@ void Calculator::on_actionOff_triggered() // toggle antialiasing off
     ui->customPlot->replot();
 }
 
+
+void Calculator::on_pushButton_addw_clicked() // show lineEdit
+{
+    if(currentLEIndex == LE_COUNT)
+    {
+        currentLEIndex--;
+    }
+    LEArray[currentLEIndex++]->show();
+}
+
+
+void Calculator::on_pushButton_rmw_clicked() // hide lineEdit
+{
+    if(currentLEIndex == 1)
+        currentLEIndex++;
+    LEArray[--currentLEIndex]->hide();
+    LEArray[currentLEIndex]->clear();
+    LEArray[currentLEIndex]->setStyleSheet("background-color: #D3D3D3; border: 1px solid gray; color: #555555;");
+    graph[currentLEIndex]->setVisible(false);
+    ui->customPlot->replot();
+}

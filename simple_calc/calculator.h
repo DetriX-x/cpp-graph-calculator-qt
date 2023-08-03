@@ -9,8 +9,11 @@
 #include <helpwindow.h>
 #include <qcustomplot.h>
 #include <QVector>
+#include <Imath.h>
 
-#define POINTS_SIZE 10001
+#define POINTS_SIZE 2501
+#define ACTUALLY_BIG_NUMBER 1.0e+16 // for filling gaps
+#define LE_COUNT 5
 
 typedef mu::Parser Parser;
 
@@ -25,8 +28,6 @@ class Calculator : public QMainWindow
 public:
     Calculator(QWidget *parent = nullptr);
     ~Calculator();
-
-
 
 private slots:
     void on_pushButton_clear_clicked();
@@ -43,8 +44,6 @@ private slots:
 
     void on_actionGraphic_triggered();
 
-    void on_pushButton_clicked();
-
     void xAxisChanged(const QCPRange &newRange);
 
     void deleteHelpMenu();
@@ -52,6 +51,14 @@ private slots:
     void on_actionOn_triggered();
 
     void on_actionOff_triggered();
+
+    void on_pushButton_draw_clicked();
+
+    void on_pushButton_addw_clicked();
+
+    void on_pushButton_rmw_clicked();
+
+    void LEChanged(const QString arg);
 
 private:
 
@@ -68,21 +75,24 @@ private:
         return true;
     }
 
+    bool checkLE();
 
-    Ui::Calculator *ui;
-    std::string tmp;
-    QString str;
-    double result;
-    Parser parser;
-    Parser graphParser;
-    HelpWindow* hw = nullptr;
-    QCPGraph* graph;
-    QVector<double> x, y;
-    double varX;
-    bool isBadGraphExpr = true;
     enum class Mode{
         Default, Graphic
     };
-
+    Ui::Calculator *ui;
+    HelpWindow* hw = nullptr;
+    std::string str;
+    double result;
+    Parser parser;
+    Parser      graphParser [LE_COUNT + 1]; // + 1 for cheking lineEdits
+    double      varX        [LE_COUNT + 1];
+    QCPGraph*   graph       [LE_COUNT];
+    QLineEdit*  LEArray     [LE_COUNT];
+    int         currentLEIndex = 1;
+    QVector<double> x; // all x's are the same
+    QVector<QVector<double> > vecY;
+    bool isBadGraphExpr = true;
+    bool isMulNext = false;
 };
 #endif // CALCULATOR_H

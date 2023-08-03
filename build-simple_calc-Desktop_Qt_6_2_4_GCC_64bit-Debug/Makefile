@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQCUSTOMPLOT_USE_LIBRARY -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQCUSTOMPLOT_USE_OPENGL -DQCUSTOMPLOT_USE_LIBRARY -DQT_QML_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../simple_calc -I. -I../libs -I/home/detrix/Qt/6.2.4/gcc_64/include -I/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets -I/home/detrix/Qt/6.2.4/gcc_64/include/QtGui -I/home/detrix/Qt/6.2.4/gcc_64/include/QtCore -I. -I. -I/home/detrix/Qt/6.2.4/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../simple_calc -I. -I../libs -I/home/detrix/Qt/6.2.4/gcc_64/include -I/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL -I/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets -I/home/detrix/Qt/6.2.4/gcc_64/include/QtGui -I/home/detrix/Qt/6.2.4/gcc_64/include/QtCore -I. -I. -I/home/detrix/Qt/6.2.4/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/detrix/Qt/6.2.4/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = simple_calc1.0.0
 DISTDIR = /home/ketrix/programs/c++/graph_calc/build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug/.tmp/simple_calc1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,../libs -Wl,-rpath,/home/detrix/Qt/6.2.4/gcc_64/lib -Wl,-rpath-link,/home/detrix/Qt/6.2.4/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/ketrix/programs/c++/graph_calc/simple_calc/../libs -lqcustomplotd -lmuparser /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Widgets.so /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Gui.so /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Core.so -lpthread -lGL   
+LIBS          = $(SUBLIBS) -L/home/ketrix/programs/c++/graph_calc/simple_calc/../libs -lqcustomplotd -lmuparser /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6OpenGL.so /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Widgets.so /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Gui.so /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Core.so -lpthread -lGL   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -182,7 +182,6 @@ DIST          = /home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/qt_config.prf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/spec_post.prf \
-		../simple_calc/.qmake.stash \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/toolchain.prf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/default_pre.prf \
@@ -339,7 +338,6 @@ Makefile: ../simple_calc/simple_calc.pro /home/detrix/Qt/6.2.4/gcc_64/mkspecs/li
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/qt_config.prf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/toolchain.prf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/default_pre.prf \
@@ -361,6 +359,7 @@ Makefile: ../simple_calc/simple_calc.pro /home/detrix/Qt/6.2.4/gcc_64/mkspecs/li
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/yacc.prf \
 		/home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/lex.prf \
 		../simple_calc/simple_calc.pro \
+		/home/detrix/Qt/6.2.4/gcc_64/lib/libQt6OpenGL.prl \
 		/home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Widgets.prl \
 		/home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Gui.prl \
 		/home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Core.prl
@@ -486,7 +485,6 @@ Makefile: ../simple_calc/simple_calc.pro /home/detrix/Qt/6.2.4/gcc_64/mkspecs/li
 /home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/qt_config.prf:
 /home/detrix/Qt/6.2.4/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/toolchain.prf:
 /home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/default_pre.prf:
@@ -508,6 +506,7 @@ Makefile: ../simple_calc/simple_calc.pro /home/detrix/Qt/6.2.4/gcc_64/mkspecs/li
 /home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/yacc.prf:
 /home/detrix/Qt/6.2.4/gcc_64/mkspecs/features/lex.prf:
 ../simple_calc/simple_calc.pro:
+/home/detrix/Qt/6.2.4/gcc_64/lib/libQt6OpenGL.prl:
 /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Widgets.prl:
 /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Gui.prl:
 /home/detrix/Qt/6.2.4/gcc_64/lib/libQt6Core.prl:
@@ -750,6 +749,11 @@ moc_calculator.cpp: ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopengles2ext.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopenglext.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopenglcontext_platform.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/QOpenGLFramebufferObject \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qopenglframebufferobject.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qtopenglglobal.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/QOpenGLPaintDevice \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qopenglpaintdevice.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/QOffscreenSurface \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qoffscreensurface.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qsurface.h \
@@ -1092,7 +1096,7 @@ moc_calculator.cpp: ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/QTimeZone \
 		moc_predefs.h \
 		/home/detrix/Qt/6.2.4/gcc_64/libexec/moc
-	/home/detrix/Qt/6.2.4/gcc_64/libexec/moc $(DEFINES) --include /home/ketrix/programs/c++/graph_calc/build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug/moc_predefs.h -I/home/detrix/Qt/6.2.4/gcc_64/mkspecs/linux-g++ -I/home/ketrix/programs/c++/graph_calc/simple_calc -I/home/ketrix/programs/c++/graph_calc/libs -I/home/detrix/Qt/6.2.4/gcc_64/include -I/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets -I/home/detrix/Qt/6.2.4/gcc_64/include/QtGui -I/home/detrix/Qt/6.2.4/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../simple_calc/calculator.h -o moc_calculator.cpp
+	/home/detrix/Qt/6.2.4/gcc_64/libexec/moc $(DEFINES) --include /home/ketrix/programs/c++/graph_calc/build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug/moc_predefs.h -I/home/detrix/Qt/6.2.4/gcc_64/mkspecs/linux-g++ -I/home/ketrix/programs/c++/graph_calc/simple_calc -I/home/ketrix/programs/c++/graph_calc/libs -I/home/detrix/Qt/6.2.4/gcc_64/include -I/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL -I/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets -I/home/detrix/Qt/6.2.4/gcc_64/include/QtGui -I/home/detrix/Qt/6.2.4/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../simple_calc/calculator.h -o moc_calculator.cpp
 
 moc_helpwindow.cpp: ../simple_calc/helpwindow.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QDialog \
@@ -1224,7 +1228,7 @@ moc_helpwindow.cpp: ../simple_calc/helpwindow.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qnativeinterface.h \
 		moc_predefs.h \
 		/home/detrix/Qt/6.2.4/gcc_64/libexec/moc
-	/home/detrix/Qt/6.2.4/gcc_64/libexec/moc $(DEFINES) --include /home/ketrix/programs/c++/graph_calc/build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug/moc_predefs.h -I/home/detrix/Qt/6.2.4/gcc_64/mkspecs/linux-g++ -I/home/ketrix/programs/c++/graph_calc/simple_calc -I/home/ketrix/programs/c++/graph_calc/libs -I/home/detrix/Qt/6.2.4/gcc_64/include -I/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets -I/home/detrix/Qt/6.2.4/gcc_64/include/QtGui -I/home/detrix/Qt/6.2.4/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../simple_calc/helpwindow.h -o moc_helpwindow.cpp
+	/home/detrix/Qt/6.2.4/gcc_64/libexec/moc $(DEFINES) --include /home/ketrix/programs/c++/graph_calc/build-simple_calc-Desktop_Qt_6_2_4_GCC_64bit-Debug/moc_predefs.h -I/home/detrix/Qt/6.2.4/gcc_64/mkspecs/linux-g++ -I/home/ketrix/programs/c++/graph_calc/simple_calc -I/home/ketrix/programs/c++/graph_calc/libs -I/home/detrix/Qt/6.2.4/gcc_64/include -I/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL -I/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets -I/home/detrix/Qt/6.2.4/gcc_64/include/QtGui -I/home/detrix/Qt/6.2.4/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../simple_calc/helpwindow.h -o moc_helpwindow.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1394,6 +1398,11 @@ ui_calculator.h: ../simple_calc/calculator.ui \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopengles2ext.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopenglext.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopenglcontext_platform.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/QOpenGLFramebufferObject \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qopenglframebufferobject.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qtopenglglobal.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/QOpenGLPaintDevice \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qopenglpaintdevice.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/QOffscreenSurface \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qoffscreensurface.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qsurface.h \
@@ -1890,7 +1899,48 @@ helpwindow.o: ../simple_calc/helpwindow.cpp ../simple_calc/helpwindow.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/QSizeF \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/QTransform \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qnativeinterface.h \
-		ui_helpwindow.h
+		../simple_calc/ui_helpwindow.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/QVariant \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QApplication \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qapplication.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qeventloop.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qfuture.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qmutex.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qresultstore.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qthreadpool.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qthread.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qrunnable.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qexception.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qpromise.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qguiapplication.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qinputmethod.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/qlocale.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qguiapplication_platform.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QGridLayout \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qlayout.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QPushButton \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qicon.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QSpacerItem \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QTextEdit \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qtextedit.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/qframe.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qtextdocument.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qtextoption.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qtextcursor.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qtextformat.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qpen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o helpwindow.o ../simple_calc/helpwindow.cpp
 
 main.o: ../simple_calc/main.cpp ../simple_calc/calculator.h \
@@ -2080,6 +2130,11 @@ main.o: ../simple_calc/main.cpp ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopengles2ext.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopenglext.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopenglcontext_platform.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/QOpenGLFramebufferObject \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qopenglframebufferobject.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qtopenglglobal.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/QOpenGLPaintDevice \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qopenglpaintdevice.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/QOffscreenSurface \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qoffscreensurface.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qsurface.h \
@@ -2610,6 +2665,11 @@ calculator.o: ../simple_calc/calculator.cpp ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopengles2ext.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopenglext.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qopenglcontext_platform.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/QOpenGLFramebufferObject \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qopenglframebufferobject.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qtopenglglobal.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/QOpenGLPaintDevice \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtOpenGL/qopenglpaintdevice.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/QOffscreenSurface \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qoffscreensurface.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtGui/qsurface.h \
@@ -2950,7 +3010,15 @@ calculator.o: ../simple_calc/calculator.cpp ../simple_calc/calculator.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtPrintSupport/qtprintsupportversion.h \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/QElapsedTimer \
 		/home/detrix/Qt/6.2.4/gcc_64/include/QtCore/QTimeZone \
-		ui_calculator.h
+		../simple_calc/ui_calculator.h \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QApplication \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QGridLayout \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QLineEdit \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QMenu \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QMenuBar \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QPushButton \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QStackedWidget \
+		/home/detrix/Qt/6.2.4/gcc_64/include/QtWidgets/QStatusBar
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o calculator.o ../simple_calc/calculator.cpp
 
 moc_calculator.o: moc_calculator.cpp 

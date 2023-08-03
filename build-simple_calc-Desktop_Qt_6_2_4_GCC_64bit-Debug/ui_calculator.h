@@ -871,7 +871,7 @@ public:
         font3.setPointSize(18);
         font3.setBold(false);
         statusbar->setFont(font3);
-        statusbar->setStyleSheet(QString::fromUtf8("color: #333;"));
+        statusbar->setStyleSheet(QString::fromUtf8(""));
         Calculator->setStatusBar(statusbar);
 
         menubar->addAction(menuMenu->menuAction());
@@ -885,7 +885,7 @@ public:
 
         retranslateUi(Calculator);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(Calculator);
