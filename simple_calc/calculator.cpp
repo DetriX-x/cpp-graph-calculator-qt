@@ -7,13 +7,27 @@ Calculator::Calculator(QWidget *parent) // constructor
 {
     ui->setupUi(this);
     // setting up user interface styles, fonts etc.
+    graphColor[0] = Qt::green;
+    graphColor[1] = Qt::blue;
+    graphColor[2] = Qt::red;
+    graphColor[3] = Qt::magenta;
+    graphColor[4] = Qt::yellow;
     ui->display->setPlaceholderText(QString("Type here..."));
     ui->lineEdit_expression->setPlaceholderText(QString("Enter a f(x) expression..."));
     LEArray[0] = ui->lineEdit_expression;
+    PBArray[0] = ui->pushButton_color;
+    PBArray[0]->setStyleSheet("background-color: " + graphColor[0].name());
+    PBArray[0]->setProperty("index", 0);
+    connect(PBArray[0], &QPushButton::clicked, this, &Calculator::pushButton_colors_clicked);
     connect(LEArray[0], &QLineEdit::textChanged, this, &Calculator::LEChanged);
     for(int i = 1; i < LE_COUNT; ++i)
     {
         LEArray[i] = new QLineEdit(this);
+        PBArray[i] = new QPushButton(this);
+        PBArray[i]->setStyleSheet("background-color: " + graphColor[i].name());
+        PBArray[i]->setProperty("index", i);
+        PBArray[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        connect(PBArray[i], &QPushButton::clicked, this, &Calculator::pushButton_colors_clicked);
         LEArray[i]->setPlaceholderText(QString("Enter a f(x) expression..."));
         LEArray[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         LEArray[i]->setStyleSheet("QLineEdit{\n	background-color: #D3D3D3;"
@@ -21,8 +35,10 @@ Calculator::Calculator(QWidget *parent) // constructor
                                   "\n	color: #555555;\n}");
         LEArray[i]->setFont(QFont("System-ui", 11));
         LEArray[i]->setPlaceholderText(QString("Enter a f(x) expression..."));
-        ui->verticalLayout_LE->addWidget(LEArray[i]);
+        ui->gridLayout_LE->addWidget(LEArray[i], i, 1);
+        ui->gridLayout_LE->addWidget(PBArray[i], i, 0);
         LEArray[i]->setVisible(false);
+        PBArray[i]->setVisible(false);
         connect(LEArray[i], &QLineEdit::textChanged, this, &Calculator::LEChanged);
     }
     // setting names to buttons
@@ -114,11 +130,11 @@ Calculator::Calculator(QWidget *parent) // constructor
         graph[i] = ui->customPlot->addGraph();
         graph[i]->setAdaptiveSampling(false); // !IMPORTANT -- for no optimization of gap(nan) points
     }
-    graph[0]->setPen(QPen(QColor(0, 180, 0), 2));
-    graph[1]->setPen(QPen(QColor(180, 0, 0), 2));
-    graph[2]->setPen(QPen(QColor(0, 0, 180), 2));
-    graph[3]->setPen(QPen(QColor(160, 75, 135), 2));
-    graph[4]->setPen(QPen(QColor(200, 160, 75), 2));
+    graph[0]->setPen(QPen(graphColor[0], 2));
+    graph[1]->setPen(QPen(graphColor[1], 2));
+    graph[2]->setPen(QPen(graphColor[2], 2));
+    graph[3]->setPen(QPen(graphColor[3], 2));
+    graph[4]->setPen(QPen(graphColor[4], 2));
     // set some pens, brushes and backgrounds:
     ui->customPlot->xAxis->setBasePen(QPen(Qt::white, 2));
     ui->customPlot->yAxis->setBasePen(QPen(Qt::white, 2));
@@ -288,6 +304,21 @@ bool Calculator::checkLE() // check all lineEdits for valid
 }
 
 
+void Calculator::pushButton_colors_clicked()
+{
+    QPushButton* pb = qobject_cast<QPushButton*>(sender());
+    int index = pb->property("index").toInt();
+    QColor newColor = QColorDialog::getColor(graphColor[index], this);
+    if(newColor.isValid() && newColor != graphColor[index])
+    {
+        graphColor[index] = newColor; 
+        pb->setStyleSheet("background-color: " + graphColor[index].name());
+        graph[index]->setPen(QPen(graphColor[index], 2));
+        ui->customPlot->replot();
+    }
+}
+
+
 void Calculator::LEChanged(const QString arg) // some of lineEdits changed his text
 {
     QLineEdit* le = qobject_cast<QLineEdit*>(sender());
@@ -413,6 +444,7 @@ void Calculator::on_pushButton_addw_clicked() // show lineEdit
     {
         currentLEIndex--;
     }
+    PBArray[currentLEIndex]->show();
     LEArray[currentLEIndex++]->show();
 }
 
@@ -424,6 +456,7 @@ void Calculator::on_pushButton_rmw_clicked() // hide lineEdit
     LEArray[--currentLEIndex]->hide();
     LEArray[currentLEIndex]->clear();
     LEArray[currentLEIndex]->setStyleSheet("background-color: #D3D3D3; border: 1px solid gray; color: #555555;");
+    PBArray[currentLEIndex]->setVisible(false);
     graph[currentLEIndex]->setVisible(false);
     ui->customPlot->replot();
 }

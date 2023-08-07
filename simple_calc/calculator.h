@@ -62,6 +62,8 @@ private slots:
 
     void LEChanged(const QString arg);
 
+    void pushButton_colors_clicked();
+
 private:
 
     bool diffSigns(double a, double b)
@@ -97,6 +99,7 @@ private:
     QColor      graphColor  [LE_COUNT];
     QCPGraph*   graph       [LE_COUNT];
     QLineEdit*  LEArray     [LE_COUNT];
+    QPushButton*PBArray     [LE_COUNT];
     int         currentLEIndex = 1;
     QVector<double> x; // all x's are the same
     QVector<QVector<double> > vecY; // for different graphs

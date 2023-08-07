@@ -20,7 +20,6 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "qcustomplot.h"
 
@@ -71,8 +70,9 @@ public:
     QPushButton *pushButton_addw;
     QPushButton *pushButton_draw;
     QCustomPlot *customPlot;
-    QVBoxLayout *verticalLayout_LE;
+    QGridLayout *gridLayout_LE;
     QLineEdit *lineEdit_expression;
+    QPushButton *pushButton_color;
     QMenuBar *menubar;
     QMenu *menuMenu;
     QMenu *menuAntialiasing;
@@ -876,8 +876,8 @@ public:
 
         gridLayout_3->addWidget(customPlot, 3, 0, 2, 3);
 
-        verticalLayout_LE = new QVBoxLayout();
-        verticalLayout_LE->setObjectName(QString::fromUtf8("verticalLayout_LE"));
+        gridLayout_LE = new QGridLayout();
+        gridLayout_LE->setObjectName(QString::fromUtf8("gridLayout_LE"));
         lineEdit_expression = new QLineEdit(page_graph);
         lineEdit_expression->setObjectName(QString::fromUtf8("lineEdit_expression"));
         QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -895,10 +895,18 @@ public:
 "	color: #555555;\n"
 "}"));
 
-        verticalLayout_LE->addWidget(lineEdit_expression);
+        gridLayout_LE->addWidget(lineEdit_expression, 0, 1, 1, 1);
 
+        pushButton_color = new QPushButton(page_graph);
+        pushButton_color->setObjectName(QString::fromUtf8("pushButton_color"));
+        sizePolicy2.setHeightForWidth(pushButton_color->sizePolicy().hasHeightForWidth());
+        pushButton_color->setSizePolicy(sizePolicy2);
 
-        gridLayout_3->addLayout(verticalLayout_LE, 0, 0, 2, 1);
+        gridLayout_LE->addWidget(pushButton_color, 0, 0, 1, 1);
+
+        gridLayout_LE->setColumnStretch(1, 2);
+
+        gridLayout_3->addLayout(gridLayout_LE, 0, 0, 2, 1);
 
         gridLayout_3->setRowStretch(3, 3);
         gridLayout_3->setColumnStretch(0, 10);
@@ -997,6 +1005,7 @@ public:
 #if QT_CONFIG(shortcut)
         pushButton_draw->setShortcut(QCoreApplication::translate("Calculator", "Return", nullptr));
 #endif // QT_CONFIG(shortcut)
+        pushButton_color->setText(QString());
         menuMenu->setTitle(QCoreApplication::translate("Calculator", "Menu", nullptr));
         menuAntialiasing->setTitle(QCoreApplication::translate("Calculator", "Antialiasing", nullptr));
     } // retranslateUi
