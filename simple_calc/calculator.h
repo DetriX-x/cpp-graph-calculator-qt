@@ -12,7 +12,7 @@
 #include <QVector>
 #include <Imath.h>
 
-#define POINTS_SIZE 20001
+#define POINTS_SIZE 32768 
 #define ERROR_FACTOR 256.0
 #define ACTUALLY_BIG_NUMBER 1.0e+16 // for filling gaps
 #define LE_COUNT 5
