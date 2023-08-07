@@ -6,15 +6,12 @@ Calculator::Calculator(QWidget *parent) // constructor
     , ui(new Ui::Calculator)
 {
     ui->setupUi(this);
+    // setting up user interface styles, fonts etc.
     ui->display->setPlaceholderText(QString("Type here..."));
     ui->lineEdit_expression->setPlaceholderText(QString("Enter a f(x) expression..."));
-    ui->lineEdit_expression_2->setPlaceholderText(QString("Enter a f(x) expression..."));
     LEArray[0] = ui->lineEdit_expression;
-    LEArray[1] = ui->lineEdit_expression_2;
-    LEArray[1]->setVisible(false);
     connect(LEArray[0], &QLineEdit::textChanged, this, &Calculator::LEChanged);
-    connect(LEArray[1], &QLineEdit::textChanged, this, &Calculator::LEChanged);
-    for(int i = 2; i < LE_COUNT; ++i)
+    for(int i = 1; i < LE_COUNT; ++i)
     {
         LEArray[i] = new QLineEdit(this);
         LEArray[i]->setPlaceholderText(QString("Enter a f(x) expression..."));
@@ -80,7 +77,7 @@ Calculator::Calculator(QWidget *parent) // constructor
     ui->stackedWidget->setCurrentIndex(int(Mode::Default));
 
     // setting up parsers
-    parser.DefineConst("pi", I_PI); // more accurate that M_PI
+    parser.DefineConst("pi", I_PI); 
     parser.DefineConst("exp", M_E);
     parser.DefineFun("cos", Icos);
     parser.DefineFun("sin", Isin);
@@ -94,14 +91,14 @@ Calculator::Calculator(QWidget *parent) // constructor
         graphParser[i].DefineVar("x", &(varX[i]));
     }
 
-
-    // initialiasing coordinates
+    // reserving space for coordinates
     x.resize(POINTS_SIZE);
     vecY.resize(LE_COUNT);
     for (int i = 0; i < LE_COUNT; ++i)
     {
         vecY[i].resize(POINTS_SIZE);
     }
+    // initialiasing coordinates
     for (int i = 0; i < x.size(); ++i)
     {
         x[i] = i / 500.0 - 1.0;
@@ -115,7 +112,6 @@ Calculator::Calculator(QWidget *parent) // constructor
     for(int i = 0; i < LE_COUNT; i++)
     {
         graph[i] = ui->customPlot->addGraph();
-        //graph[i]->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssNone, QPen(Qt::black, 1.5), QBrush(Qt::white), 9));
         graph[i]->setAdaptiveSampling(false); // !IMPORTANT -- for no optimization of gap(nan) points
     }
     graph[0]->setPen(QPen(QColor(0, 180, 0), 2));
@@ -198,7 +194,7 @@ void Calculator::on_pushButton_res_clicked() // result button clicked
 }
 
 
-void Calculator::calc_key_handler()
+void Calculator::calc_key_handler() // handler of buttons
 {
     QPushButton* btn = qobject_cast<QPushButton*>(sender());
     switch(btn->property("name").toInt())
@@ -250,7 +246,7 @@ void Calculator::on_actionHelp_triggered() // help window open
 }
 
 
-void Calculator::deleteHelpMenu()
+void Calculator::deleteHelpMenu() // helpMenu had finished his work
 {
     delete hw;
     hw = nullptr;
@@ -269,7 +265,7 @@ void Calculator::on_actionGraphic_triggered() // Graphic mode
 }
 
 
-bool Calculator::checkLE()
+bool Calculator::checkLE() // check all lineEdits for valid
 {
     bool fl = true;
     for(int i =0; i < currentLEIndex; ++i)
@@ -292,7 +288,7 @@ bool Calculator::checkLE()
 }
 
 
-void Calculator::LEChanged(const QString arg)
+void Calculator::LEChanged(const QString arg) // some of lineEdits changed his text
 {
     QLineEdit* le = qobject_cast<QLineEdit*>(sender());
     le->setStyleSheet("background-color: #D3D3D3; border: 1px solid gray; color: #555555;");
@@ -311,7 +307,6 @@ void Calculator::LEChanged(const QString arg)
 
 void Calculator::on_pushButton_draw_clicked() // Draw graph
 {
-    //
     bool ok = checkLE();
     if(!ok)
     {
@@ -329,41 +324,71 @@ void Calculator::on_pushButton_draw_clicked() // Draw graph
         graph[i]->setVisible(true);
     }
     isBadGraphExpr = false;
+    isForceDraw = true;
     ui->statusbar->clearMessage();
     xAxisChanged(ui->customPlot->xAxis->range());
 }
 
-
-void Calculator::xAxisChanged(const QCPRange& newRange) // changed xAxis max or min value
-{
-    if(isBadGraphExpr)
-    {
-        return;
+bool Calculator::needReCalculateXY(double left, double right) // returns true if point shoul be racalculated
+{ // or accuracy will be lost
+    double currentCenter = (right + left) / 2.0;
+    double currentXLen = right - left;
+    double xLen = rightTail - leftTail;
+    if((right >= rightTail) || (left <= leftTail) || (currentXLen < xLen / 4.0))
+    { // drag left or drag right or zoom in/out
+        rightTail = currentCenter + currentXLen;
+        leftTail =  currentCenter - currentXLen;
+        return true;
     }
+    return false;
+}
+
+
+void Calculator::reCalculateXY(double left, double right) // recalculating of x and y values
+{
     // vecY[j][i] - double value of j graph y coordinate
     // formula of recalculating of current x[i] coordinate accroding to new xAxis range
-    varX[0] = x[0] = newRange.lower + 0 * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1));
+    varX[0] = x[0] = left + 0 * (abs(right - left) / (POINTS_SIZE - 1));
     for(int j = 0; j < currentLEIndex; ++j) // for every graph
     {
         vecY[j][0] = graphParser[j].Eval();
         for(int i = 1; i < x.size(); ++i) // calculate every coordinate
         {
-            varX[j] = x[i] = newRange.lower + i * (abs(newRange.lower - newRange.upper) / (POINTS_SIZE - 1)) ;
+            varX[j] = x[i] = left + i * (abs(left - right) / (POINTS_SIZE - 1)); // formula
             vecY[j][i] = graphParser[j].Eval();
             if(isMulNext) // if on prev step gap was detected
-            {
+            { // we emulate that this point is +-inf
                 vecY[j][i] *= ACTUALLY_BIG_NUMBER;
                 isMulNext = false;
             }
-            if(diffSigns(vecY[j][i], vecY[j][i-1]) && abs(vecY[j][i]) + abs(vecY[j][i-1]) > 1.0) // gap detected
+            if((diffSigns(vecY[j][i], vecY[j][i-1])) && // new sign and
+                (abs(vecY[j][i]) * abs(vecY[j][i-1]) >  // their module more that error factor
+                 abs(right - left) / ERROR_FACTOR))     // ---> gap detected
             {
                 vecY[j][i] = std::numeric_limits<double>::quiet_NaN(); // gap point
-                vecY[j][i - 1] *= ACTUALLY_BIG_NUMBER; // prev should be super big or super small
-                isMulNext = true; // NEXT should be super big or super small
+                vecY[j][i - 1] *= ACTUALLY_BIG_NUMBER; // we emulate that this point is +-inf
+                isMulNext = true; // NEXT should be +-inf
             }
         }
         graph[j]->setData(x, vecY[j]);
     }
+}
+
+
+void Calculator::xAxisChanged(const QCPRange& newRange) // changed xAxis max or min value
+{
+    double left = newRange.lower;
+    double right = newRange.upper;
+    if(isBadGraphExpr)
+    {
+        return;
+    }
+    if(!needReCalculateXY(left, right) && !isForceDraw)
+    {
+        return;
+    }
+    isForceDraw = false;
+    reCalculateXY(leftTail, rightTail);
     ui->customPlot->replot();
 }
 

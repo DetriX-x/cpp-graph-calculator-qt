@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 #include <QtMath>
-#include <QMessageBox>
+#include <QColorDialog>
+#include <QColor>
 #include <string>
 #include <muParser.h>
 #include <helpwindow.h>
@@ -11,7 +12,8 @@
 #include <QVector>
 #include <Imath.h>
 
-#define POINTS_SIZE 2501
+#define POINTS_SIZE 20001
+#define ERROR_FACTOR 256.0
 #define ACTUALLY_BIG_NUMBER 1.0e+16 // for filling gaps
 #define LE_COUNT 5
 
@@ -77,22 +79,33 @@ private:
 
     bool checkLE();
 
+    bool needReCalculateXY(double left, double right);
+
+    void reCalculateXY(double left, double right);
+
     enum class Mode{
         Default, Graphic
     };
     Ui::Calculator *ui;
-    HelpWindow* hw = nullptr;
-    std::string str;
-    double result;
-    Parser parser;
+    HelpWindow* hw = nullptr; // help menu
+    std::string str; // tmp string for parsing
+    double result; // result
+    Parser parser; // default parser
+    // variables for graph calc:
     Parser      graphParser [LE_COUNT + 1]; // + 1 for cheking lineEdits
     double      varX        [LE_COUNT + 1];
+    QColor      graphColor  [LE_COUNT];
     QCPGraph*   graph       [LE_COUNT];
     QLineEdit*  LEArray     [LE_COUNT];
     int         currentLEIndex = 1;
     QVector<double> x; // all x's are the same
-    QVector<QVector<double> > vecY;
-    bool isBadGraphExpr = true;
-    bool isMulNext = false;
+    QVector<QVector<double> > vecY; // for different graphs
+    bool isBadGraphExpr = true; // expression is empty
+    bool isMulNext = false; // for calculating gaps
+    bool isForceDraw = false; // for force replot
+    // x coordinates of range of points
+    double leftTail = -3.0;
+    double rightTail = 3.0;
+
 };
 #endif // CALCULATOR_H

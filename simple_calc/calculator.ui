@@ -1281,28 +1281,6 @@ QPushButton:pressed{
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QLineEdit" name="lineEdit_expression_2">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>System-ui</family>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QLineEdit{
-	background-color: #D3D3D3;
-	border: 1px solid gray;
-	color: #555555;
-}</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
        </layout>

@@ -73,7 +73,6 @@ public:
     QCustomPlot *customPlot;
     QVBoxLayout *verticalLayout_LE;
     QLineEdit *lineEdit_expression;
-    QLineEdit *lineEdit_expression_2;
     QMenuBar *menubar;
     QMenu *menuMenu;
     QMenu *menuAntialiasing;
@@ -898,21 +897,6 @@ public:
 
         verticalLayout_LE->addWidget(lineEdit_expression);
 
-        lineEdit_expression_2 = new QLineEdit(page_graph);
-        lineEdit_expression_2->setObjectName(QString::fromUtf8("lineEdit_expression_2"));
-        sizePolicy2.setHeightForWidth(lineEdit_expression_2->sizePolicy().hasHeightForWidth());
-        lineEdit_expression_2->setSizePolicy(sizePolicy2);
-        QFont font3;
-        font3.setFamilies({QString::fromUtf8("System-ui")});
-        lineEdit_expression_2->setFont(font3);
-        lineEdit_expression_2->setStyleSheet(QString::fromUtf8("QLineEdit{\n"
-"	background-color: #D3D3D3;\n"
-"	border: 1px solid gray;\n"
-"	color: #555555;\n"
-"}"));
-
-        verticalLayout_LE->addWidget(lineEdit_expression_2);
-
 
         gridLayout_3->addLayout(verticalLayout_LE, 0, 0, 2, 1);
 
@@ -928,11 +912,11 @@ public:
         menubar = new QMenuBar(Calculator);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 413, 22));
-        QFont font4;
-        font4.setFamilies({QString::fromUtf8("Ubuntu")});
-        font4.setPointSize(11);
-        font4.setBold(true);
-        menubar->setFont(font4);
+        QFont font3;
+        font3.setFamilies({QString::fromUtf8("Ubuntu")});
+        font3.setPointSize(11);
+        font3.setBold(true);
+        menubar->setFont(font3);
         menubar->setStyleSheet(QString::fromUtf8("background-color: qlineargradient(spread:pad, x1:0.542045, y1:0.034, x2:0.532, y2:0.983, stop:0 rgba(45, 45, 45, 255), stop:1 rgba(81, 80, 77, 255));\n"
 "color: #DDD;"));
         menuMenu = new QMenu(menubar);
@@ -942,11 +926,11 @@ public:
         Calculator->setMenuBar(menubar);
         statusbar = new QStatusBar(Calculator);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
-        QFont font5;
-        font5.setFamilies({QString::fromUtf8("Ubuntu")});
-        font5.setPointSize(18);
-        font5.setBold(false);
-        statusbar->setFont(font5);
+        QFont font4;
+        font4.setFamilies({QString::fromUtf8("Ubuntu")});
+        font4.setPointSize(18);
+        font4.setBold(false);
+        statusbar->setFont(font4);
         statusbar->setStyleSheet(QString::fromUtf8("color: #7d0e0e;"));
         Calculator->setStatusBar(statusbar);
 
